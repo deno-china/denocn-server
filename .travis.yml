@@ -3,25 +3,26 @@ services:
   - docker
   - mysql
   - redis
-  
+
 cache:
   yarn: true
-  #directories:
 
 addons:
   ssh_known_hosts: 47.75.127.82
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_629bc493d5be_key -iv $encrypted_629bc493d5be_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
   - curl -fsSL https://deno.land/x/install/install.sh | sh
   - export PATH="/home/travis/.deno/bin:$PATH"
-  
+
 script:
-  - deno ./test.ts
+  - deno ./test.ts --allow-all
   - docker build ./ -t denocn/website
   - docker run -d -p 3000:3000 denocn/website
   - curl http://127.0.0.1:3000
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker push denocn/website
-
+  
 after_success:
   - ssh root@47.75.127.82 "source /etc/profile;/root/denocn.sh"

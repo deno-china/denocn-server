@@ -1,4 +1,4 @@
-FROM hayd/deno:alpine-0.3.0
+FROM hayd/deno:alpine-0.3.2
 MAINTAINER manyuanrong "416828041@qq.com"
 
 COPY ./ /data/
