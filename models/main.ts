@@ -1,7 +1,12 @@
-import * as orm from "../common/orm.ts";
+import { dso } from "../deps.ts";
 import * as config from "../config.ts";
+import "./message.ts";
 import "./user.ts";
 
 export async function connect() {
-    await orm.connect(config.mysql);
+    await dso.connect(config.mysql);
+}
+
+export async function sync(force: boolean) {
+    await dso.sync(force);
 }

@@ -1,0 +1,27 @@
+language: node_js
+services:
+  - docker
+  - mysql
+  - redis
+  
+cache:
+  yarn: true
+  #directories:
+
+addons:
+  ssh_known_hosts: 47.75.127.82
+
+before_install:
+  - curl -fsSL https://deno.land/x/install/install.sh | sh
+  - export PATH="/home/travis/.deno/bin:$PATH"
+  
+script:
+  - deno ./test.ts
+  - docker build ./ -t denocn/website
+  - docker run -d -p 3000:3000 denocn/website
+  - curl http://127.0.0.1:3000
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker push denocn/website
+
+after_success:
+  - ssh root@47.75.127.82 "source /etc/profile;/root/denocn.sh"

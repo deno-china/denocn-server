@@ -1,0 +1,6 @@
+/node_modules
+.travis.yml
+.gitignore
+/mysql.log
+/package*.json
+/yarn.lock

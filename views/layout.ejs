@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="<%= config.description %>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="<%= config.keywords %>" />
+    <meta name="referrer" content="always" />
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/styles/main.css" />
+    <title>
+      <%= config.title %>
+    </title>
+  </head>
+
+  <body>
+    <%- await include(`${Deno.cwd()}/views/header.ejs`)%>
+    <div id="main">
+      <div id="content">
+        <%- await include(page, data) %>
+      </div>
+      <div id="side"></div>
+    </div>
+    <%- await include(`${Deno.cwd()}/views/footer.ejs`)%>
+  </body>
+</html>
