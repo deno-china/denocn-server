@@ -15,13 +15,8 @@
   </head>
 
   <body>
-    <%- await include(`${Deno.cwd()}/views/header.ejs`)%>
-    <div id="main">
-      <div id="content">
-        <%- await include(page, data) %>
-      </div>
-      <div id="side"></div>
-    </div>
-    <%- await include(`${Deno.cwd()}/views/footer.ejs`)%>
+    <%- await include(`${Deno.cwd()}/views/header.ejs`, session)%>
+    <%- await include(page, data) %>
+    <%- await include(`${Deno.cwd()}/views/footer.ejs`, session)%>
   </body>
 </html>

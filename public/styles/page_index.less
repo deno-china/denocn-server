@@ -1,0 +1,83 @@
+.page-index {
+  .topics {
+    .header {
+      a {
+        display: inline-block;
+        border-radius: 5px;
+        padding: 5px 10px;
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        &:hover {
+          background: #ddd;
+        }
+      }
+    }
+    .list {
+      a {
+        display: block;
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+        padding: 10px 5px;
+        img {
+          float: left;
+          display: block;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 1px solid #eee;
+        }
+        h2 {
+          display: block;
+          float: left;
+          font-size: 16px;
+          color: #333;
+        }
+        i {
+          float: left;
+          display: block;
+          border-radius: 5px;
+          background: #388e3c;
+          line-height: 26px;
+          margin: 7px 10px;
+          padding: 0 8px;
+          font-size: 14px;
+          font-style: normal;
+          color: #fff;
+        }
+        .counters {
+          float: right;
+          font-size: 16px;
+          color: #888;
+          .time {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .page-index {
+    .topics {
+      .list {
+        a {
+          position: relative;
+          h2 {
+            line-height: 20px;
+            clear: both;
+            margin-top: 10px;
+          }
+          .counters {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,9 @@ const {
   MYSQL_DB,
   REDIS_PORT,
   REDIS_HOST,
-  REDIS_PASS
+  REDIS_PASS,
+  GITHUB_CLIENTID,
+  GITHUB_REDIRECT
 } = Deno.env();
 
 // 数据配置
@@ -37,7 +39,7 @@ export const website = {
 };
 
 export const github = {
-  clientId: "dc94ce9a00097582a7ee",
-  clientSecret: GITHUB_SECRET,
-  redirectUri: "https://www.denocn.org/user/github"
+  clientId: GITHUB_CLIENTID || "32503fcf79dea41e69af",
+  clientSecret: GITHUB_SECRET || "7f861c6aa9385e910fdf5b680792a442ee3f3ca2",
+  redirectUri: GITHUB_REDIRECT || "http://127.0.0.1:3000/user/github"
 };

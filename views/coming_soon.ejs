@@ -1,0 +1,11 @@
+<div id="main">
+  <div id="content" style="font-size: 24px; text-align: center; padding-bottom: 20px;">
+    敬请期待
+  </div>
+  <div id="side">
+    <%- await include(`${Deno.cwd()}/views/panels/user_info.ejs`,
+    {user:session.user, title:"个人信息"})%>
+    <!-- 友情链接 -->
+    <%- await include(`${Deno.cwd()}/views/panels/friends.ejs`)%>
+  </div>
+</div>

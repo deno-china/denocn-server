@@ -23,5 +23,5 @@ export const User = define("users", {
   followerCount: { type: FieldTypes.INT, length: 10, default: 0 },
   followingCount: { type: FieldTypes.INT, length: 10, default: 0 },
   level: { type: FieldTypes.STRING, length: 50 },
-  score: { type: FieldTypes.INT, length: 10 }
+  score: { type: FieldTypes.INT, length: 10, default: 0 }
 });

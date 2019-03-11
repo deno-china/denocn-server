@@ -1,8 +1,9 @@
 header {
   background: #fff;
-  height: 50px;
+  height: 54px;
   width: 100%;
   box-shadow: 0 5px 10px 0 #ddd;
+  border-top: 4px solid @primary;
   .inner {
     max-width: 1400px;
     width: 90%;
@@ -40,6 +41,30 @@ header {
         color: #888;
         &:hover {
           color: #000;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  header {
+    height: auto;
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1px solid #ddd;
+      * {
+        clear: both;
+      }
+    }
+    .inner {
+      nav {
+        clear: both;
+        a {
+          line-height: 40px;
         }
       }
     }

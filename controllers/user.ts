@@ -1,6 +1,6 @@
 import { BaseController } from "../common/base_controller.ts";
+import { dateFormat } from "../common/util.ts";
 import { github } from "../config.ts";
-import { Status } from "../deps.ts";
 import { User } from "../models/user.ts";
 
 export default class UserController extends BaseController {
@@ -17,8 +17,12 @@ export default class UserController extends BaseController {
         `&state=${state}` +
         `&redirect_uri=${github.redirectUri}`;
     }
-    this.ctx.response.headers.append("Location", url);
-    this.ctx.response.status = Status.Found;
+    this.redirect(url);
+  }
+
+  async logout() {
+    this.ctx.state.session.user = null;
+    this.redirect("/");
   }
 
   async github() {
@@ -43,40 +47,45 @@ export default class UserController extends BaseController {
     const { session } = this.ctx.state;
     let user = await User.findOne({ githubId: info.id });
     let userId: number;
+    const userInfo: any = {
+      githubId: info.id,
+      githubName: info.login,
+      name: info.login,
+      githubToken: accessToken,
+      nickName: info.name,
+      location: info.location,
+      avatar: `https://avatars1.githubusercontent.com/u/${info.id}?v=4`,
+      email: info.email,
+      company: info.company,
+      homePage: info.blog,
+      signature: info.bio
+    };
 
     if (user) {
       userId = user.id;
-      await User.update({
-        id: user.id,
-        githubId: info.id,
-        githubName: info.login,
-        githubToken: accessToken,
-        nickName: info.name,
-        location: info.location,
-        avatar: info.avatar_url,
-        email: info.email,
-        company: info.company,
-        homePage: info.blog,
-        signature: info.bio
-      });
+      userInfo.id = 1;
+      await User.update(userInfo);
     } else {
-      userId = await User.insert({
-        githubId: info.id,
-        githubName: info.login,
-        name: info.login,
-        githubToken: accessToken,
-        nickName: info.name,
-        location: info.location,
-        avatar: info.avatar_url,
-        email: info.email,
-        company: info.company,
-        homePage: info.blog,
-        signature: info.bio
-      }) as number;
+      userId = (await User.insert(userInfo)) as number;
     }
 
     user = await User.findById(userId);
     session.user = user;
-    this.ctx.response.body = user;
+    this.redirect(`/user/${user.name}`);
+  }
+
+  async profile() {
+    const name = this.ctx.params.name;
+    console.log(name);
+    const user: any = await User.findOne({ name });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    user.createdAt = dateFormat("yyyy年MM月dd日 hh:mm", user.createdAt);
+    await this.render("user/profile", { user });
+  }
+
+  async setting() {
+    await this.render("user/setting", { user: this.ctx.state.session.user });
   }
 }

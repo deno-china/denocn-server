@@ -1,1 +1,51 @@
-index
+<div id="main" class="page-index">
+  <div id="content">
+    <div class="panel topics">
+      <div class="header">
+        <a href="/">活跃</a>
+        <a href="/?type=good">精华</a>
+        <a href="/?type=new">最新</a>
+        <a href="/?type=noreply">零回复</a>
+        <a href="/?type=job">招聘</a>
+      </div>
+      <div class="body">
+        <div class="list">
+          <a href="#">
+            <img
+              src="https://iocaffcdn.phphub.org/uploads/avatars/1_1530614766.png!/both/100x100"
+              alt=""
+            />
+            <i>置顶</i>
+            <h2>Deno中文社区快要跟大家见面了，敬请期待大家使用</h2>
+            <div class="counters">
+              <span class="view">12</span>
+              <span class="reply">/ 13k /</span>
+              <span class="time">1小时前</span>
+            </div>
+          </a>
+          <a href="#">
+            <img
+              src="https://iocaffcdn.phphub.org/uploads/avatars/1_1530614766.png!/both/100x100"
+              alt=""
+            />
+            <i>置顶</i>
+            <h2>
+              Deno社区后端技术栈全部由Deno实现，是目前第一个完整的包含前后端线上项目
+            </h2>
+            <div class="counters">
+              <span class="view">12</span>
+              <span class="reply">/ 13k /</span>
+              <span class="time">1小时前</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="side">
+    <%- await include(`${Deno.cwd()}/views/panels/user_info.ejs`,
+    {user:session.user, title:"个人信息"})%>
+    <!-- 友情链接 -->
+    <%- await include(`${Deno.cwd()}/views/panels/friends.ejs`)%>
+  </div>
+</div>

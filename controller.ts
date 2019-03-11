@@ -1,5 +1,6 @@
 import { BaseController } from "./common/base_controller.ts";
 import HomeController from "./controllers/home.ts";
+import SinglePagesController from "./controllers/single_pages.ts";
 import UserController from "./controllers/user.ts";
 import { Application, assert, Router } from "./deps.ts";
 
@@ -9,15 +10,21 @@ const controllers = {};
 // 在这里注册Controller
 let controllerClasses: typeof BaseController[] = [
   HomeController,
-  UserController
+  UserController,
+  SinglePagesController
 ];
 
 // 在这里添加路由映射
 const routes = {
   "/": "home.index",
-  "/home": "home.home",
+  "/setting": "user.setting",
   "/user/login": "user.login",
-  "/user/github": "user.github"
+  "/user/logout": "user.logout",
+  "/user/github": "user.github",
+  "/user/:name": "user.profile",
+  "/api": "singlepages.api",
+  "/getting-start": "singlepages.gettingStart",
+  "/about": "singlepages.about"
 };
 
 // TODO manyuanrong
@@ -40,7 +47,7 @@ export function register(app: Application) {
     controllers[name] = controller;
   });
 
-  console.log("\nregister controller handlers:\n");
+  console.log("\nRegister Controller Handlers:\n");
   Object.keys(routes).forEach(path => {
     let parts: string[] = routes[path].split(":");
     const method = parts.length < 2 ? "get" : parts[0];
@@ -49,14 +56,15 @@ export function register(app: Application) {
       parts.unshift("get");
     }
     assert(handerParts.length === 2);
-    const controller = handerParts[0];
-    const handler = handerParts[1];
+    const controllerName = handerParts[0];
+    const handlerName = handerParts[1];
     console.log(
-      `${method.toLocaleUpperCase()} ${path} => ${controller}.${handler}`
+      `${method.toLocaleUpperCase()} ${path} => ${controllerName}.${handlerName}`
     );
     router[method](path, async ctx => {
-      const func = controllers[controller][handler];
-      await func.call({ ctx, render: controllers[controller].render });
+      const controller = controllers[controllerName];
+      controller.ctx = ctx;
+      await controller[handlerName]();
     });
   });
 
