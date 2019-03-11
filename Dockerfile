@@ -3,6 +3,6 @@ MAINTAINER manyuanrong "416828041@qq.com"
 
 COPY ./ /data/
 WORKDIR /data
-RUN deno ./server.ts --prefetch
+ENV DENO_DIR=/data/cache
 
 CMD [ "deno", "./server.ts", "--allow-all" ]

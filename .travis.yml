@@ -17,10 +17,10 @@ before_install:
   - export PATH="/home/travis/.deno/bin:$PATH"
 
 script:
+  - export DENO_DIR="$PWD/cache"
+  - deno ./server.ts --prefetch
   - deno ./test.ts --allow-all
   - docker build ./ -t denocn/website
-  - docker run -d -p 3000:3000 denocn/website
-  - curl http://127.0.0.1:3000
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker push denocn/website
 
