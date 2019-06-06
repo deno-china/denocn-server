@@ -2,6 +2,6 @@ mysql.log
 package-lock.json
 package.json
 .vscode
-node_modules
+*node_modules/
 tsconfig.json
 yarn.lock
