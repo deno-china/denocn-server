@@ -1,4 +1,5 @@
-FROM hayd/deno:alpine-0.7.0
+#FROM hayd/deno:alpine-0.7.0
+FROM maxmcd/deno
 MAINTAINER manyuanrong "416828041@qq.com"
 
 COPY ./ /data/
