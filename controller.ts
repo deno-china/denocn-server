@@ -1,6 +1,4 @@
 import { BaseController } from "./common/base_controller.ts";
-import HomeController from "./controllers/home.ts";
-import SinglePagesController from "./controllers/single_pages.ts";
 import UserController from "./controllers/user.ts";
 import { Application, assert, Router } from "./deps.ts";
 
@@ -8,23 +6,13 @@ const router = new Router();
 const controllers = {};
 
 // 在这里注册Controller
-let controllerClasses: typeof BaseController[] = [
-  HomeController,
-  UserController,
-  SinglePagesController
-];
+let controllerClasses: typeof BaseController[] = [UserController];
 
 // 在这里添加路由映射
 const routes = {
-  "/": "home.index",
-  "/setting": "user.setting",
   "/user/login": "user.login",
   "/user/logout": "user.logout",
-  "/user/github": "user.github",
-  "/user/:name": "user.profile",
-  "/api": "singlepages.api",
-  "/getting-start": "singlepages.gettingStart",
-  "/about": "singlepages.about"
+  "/user/github": "user.github"
 };
 
 // TODO manyuanrong

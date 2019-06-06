@@ -1,11 +1,11 @@
-import { cwd } from "deno";
-import * as config from "./config.ts";
-import { register } from "./controller.ts";
-import { Application, send, HttpError, Status, colors } from "./deps.ts";
-import { connect as connectDb } from "./models/main.ts";
+import { cookie } from "./common/cookis.ts";
 import { connectRedis } from "./common/redis.ts";
 import { redisSession } from "./common/session.ts";
-import { cookie } from "./common/cookis.ts";
+import * as config from "./config.ts";
+import { register } from "./controller.ts";
+import { Application, colors, HttpError, send, Status } from "./deps.ts";
+import { connect as connectDb } from "./models/main.ts";
+const { cwd } = Deno;
 
 interface State {
   cookies: Map<string, string>;

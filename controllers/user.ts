@@ -1,5 +1,4 @@
 import { BaseController } from "../common/base_controller.ts";
-import { dateFormat } from "../common/util.ts";
 import { github } from "../config.ts";
 import { User } from "../models/user.ts";
 
@@ -71,7 +70,7 @@ export default class UserController extends BaseController {
 
     user = await User.findById(userId);
     session.user = user;
-    this.redirect(`/user/${user.name}`);
+    this.redirect(`/user/${user.id}`);
   }
 
   async profile() {
@@ -81,11 +80,6 @@ export default class UserController extends BaseController {
     if (!user) {
       throw new Error("User not found");
     }
-    user.createdAt = dateFormat("yyyy年MM月dd日 hh:mm", user.createdAt);
-    await this.render("user/profile", { user });
-  }
-
-  async setting() {
-    await this.render("user/setting", { user: this.ctx.state.session.user });
+    return user;
   }
 }
