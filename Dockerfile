@@ -9,4 +9,4 @@ ENV DENO_DIR /data/cache
 EXPOSE 3000
 ENTRYPOINT []
 
-CMD [ "deno", "run", "--allow-all", "./server.ts" ]
+CMD [ "deno", "run", "--allow-all", "-c", "tsconfig.json", "./server.ts" ]
