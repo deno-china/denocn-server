@@ -1,3 +1,5 @@
+import { RouterContext } from "../deps.ts";
+
 export function dateFormat(format: string, date: Date) {
   var o = {
     "M+": date.getMonth() + 1,
@@ -22,4 +24,12 @@ export function dateFormat(format: string, date: Date) {
       );
   }
   return format;
+}
+
+export function getAllRequestParams(ctx: RouterContext) {
+  const params = {};
+  for (const pair of ctx.request.searchParams.entries()) {
+    params[pair[0]] = pair[1];
+  }
+  return { ...ctx.params, ...params };
 }

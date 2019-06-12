@@ -6,7 +6,6 @@ const SESSION_KEY = "oaksessionid";
 const EXPIRE = 60 * 60 * 24; // one day
 
 export async function redisSession(ctx: Context, next: () => void) {
-  console.log("SESSION_MIDDLEWARE");
   const redis = getRedis();
   let sessionId = ctx.state.cookies.get(SESSION_KEY);
   if (!sessionId) {

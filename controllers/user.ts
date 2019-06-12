@@ -1,13 +1,17 @@
-import { BaseController } from "../common/base_controller.ts";
+import {
+  BaseController,
+  Controller,
+  Get,
+  Param
+} from "../common/base_controller.ts";
 import { github } from "../config.ts";
 import { User } from "../models/user.ts";
 
+@Controller("/user")
 export default class UserController extends BaseController {
-  async login() {
-    let url = "";
-    if (this.ctx.state.session.user) {
-      url = this.ctx.request.searchParams.get("redirect") || "/";
-    } else {
+  @Get("/login")
+  async login(@Param("redirect") url: string = "/") {
+    if (!this.ctx.state.session.user) {
       const state = Math.round(Date.now() * Math.random());
       url =
         `https://github.com/login/oauth/authorize` +
@@ -19,14 +23,14 @@ export default class UserController extends BaseController {
     this.redirect(url);
   }
 
+  @Get("/logout")
   async logout() {
     this.ctx.state.session.user = null;
     this.redirect("/");
   }
 
-  async github() {
-    const code = this.ctx.request.searchParams.get("code");
-    const state = this.ctx.request.searchParams.get("state");
+  @Get("/github")
+  async github(@Param("code") code: string, @Param("state") state: string) {
     let result = await fetch(`https://github.com/login/oauth/access_token`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -73,13 +77,9 @@ export default class UserController extends BaseController {
     this.redirect(`/user/${user.id}`);
   }
 
-  async profile() {
-    const name = this.ctx.params.name;
-    console.log(name);
-    const user: any = await User.findOne({ name });
-    if (!user) {
-      throw new Error("User not found");
-    }
-    return user;
+  @Get("/info/:id")
+  async info(@Param("id") id: string) {
+    const user = await User.findById(id);
+    return { ...user, password: null, githubToken: null };
   }
 }

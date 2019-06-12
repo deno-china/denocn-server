@@ -1,5 +1,9 @@
-import { BaseController } from "../common/base_controller.ts";
+import { BaseController, Controller, Get } from "../common/base_controller.ts";
 
+@Controller()
 export default class HomeController extends BaseController {
-  async index() {}
+  @Get("/")
+  index() {
+    return "Welcome to Deno China";
+  }
 }

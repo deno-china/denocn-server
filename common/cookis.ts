@@ -1,7 +1,6 @@
 import { Context } from "../deps.ts";
 
 export async function cookie(ctx: Context, next: () => void) {
-  console.log("COOKIE_START");
   const cookie = ctx.request.headers.get("cookie");
   const cookies = new Map<string, string>();
   if (cookie) {
@@ -12,5 +11,4 @@ export async function cookie(ctx: Context, next: () => void) {
   }
   ctx.state.cookies = cookies;
   await next();
-  console.log("COOKIE_END");
 }
