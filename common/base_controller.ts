@@ -53,6 +53,9 @@ function registerRoute(
           return val.toLowerCase() !== "false" && val.toLowerCase() !== "0";
         }
       } else {
+        if (!val) {
+          return undefined;
+        }
         return new Type(val);
       }
     });
