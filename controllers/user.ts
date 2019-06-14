@@ -1,9 +1,5 @@
-import {
-  BaseController,
-  Controller,
-  Get,
-  Param
-} from "../common/base_controller.ts";
+import { Where } from "../../../Library/Caches/deno/deps/https/raw.githubusercontent.com/manyuanrong/dso/0.2.0/mod.ts";
+import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
 import { github } from "../config.ts";
 import { User } from "../models/user.ts";
 
@@ -48,7 +44,7 @@ export default class UserController extends BaseController {
 
     const info = await result.json();
     const { session } = this.ctx.state;
-    let user = await User.findOne({ githubId: info.id });
+    let user = await User.findOne(Where.field("github_id").eq(info.id));
     let userId: number;
     const userInfo: any = {
       githubId: info.id,

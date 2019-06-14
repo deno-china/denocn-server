@@ -1,5 +1,5 @@
 import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
-import { Topic } from "../models/message.ts";
+import { Topic } from "../models/topic.ts";
 
 type TopicListFilter = "all" | "new" | "job" | "good" | "hot" | "cold";
 

@@ -1,27 +1,53 @@
-import { dso } from "../deps.ts";
+import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
 
-const { define, FieldTypes } = dso;
+@Model("users")
+class UserModel extends BaseModel<UserModel> {
+  @Field({
+    type: FieldType.INT,
+    length: 20,
+    primary: true,
+    autoIncrement: true
+  })
+  id: number;
+  @Field({ type: FieldType.STRING, length: 50 })
+  name: string;
+  @Field({ type: FieldType.STRING, length: 50 })
+  nickName: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  password: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  email: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  homePage: string;
+  @Field({ type: FieldType.STRING, length: 255 })
+  avatar: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  location: string;
+  @Field({ type: FieldType.STRING, length: 200 })
+  signature: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  company: string;
 
-export const User = define("users", {
-  id: { type: FieldTypes.INT, length: 20, primary: true, autoIncrement: true },
-  name: { type: FieldTypes.STRING, length: 50 },
-  nickName: { type: FieldTypes.STRING, length: 50 },
-  password: { type: FieldTypes.STRING, length: 100 },
-  email: { type: FieldTypes.STRING, length: 100 },
-  homePage: { type: FieldTypes.STRING, length: 100 },
-  avatar: { type: FieldTypes.STRING, length: 255 },
-  location: { type: FieldTypes.STRING, length: 100 },
-  signature: { type: FieldTypes.STRING, length: 200 },
-  company: { type: FieldTypes.STRING, length: 100 },
+  @Field({ type: FieldType.STRING, length: 50 })
+  githubId: string;
+  @Field({ type: FieldType.STRING, length: 50 })
+  githubName: string;
+  @Field({ type: FieldType.STRING, length: 100 })
+  githubToken: string;
 
-  githubId: { type: FieldTypes.STRING, length: 50 },
-  githubName: { type: FieldTypes.STRING, length: 50 },
-  githubToken: { type: FieldTypes.STRING, length: 100 },
+  @Field({ type: FieldType.INT, length: 10, default: 0 })
+  topicCount: number;
+  @Field({ type: FieldType.INT, length: 10, default: 0 })
+  replyCount: number;
+  @Field({ type: FieldType.INT, length: 10, default: 0 })
+  followerCount: number;
+  @Field({ type: FieldType.INT, length: 10, default: 0 })
+  followingCount: number;
+  @Field({ type: FieldType.STRING, length: 50 })
+  level: string;
+  @Field({ type: FieldType.INT, length: 10, default: 0 })
+  score: number;
+}
 
-  topicCount: { type: FieldTypes.INT, length: 10, default: 0 },
-  replyCount: { type: FieldTypes.INT, length: 10, default: 0 },
-  followerCount: { type: FieldTypes.INT, length: 10, default: 0 },
-  followingCount: { type: FieldTypes.INT, length: 10, default: 0 },
-  level: { type: FieldTypes.STRING, length: 50 },
-  score: { type: FieldTypes.INT, length: 10, default: 0 }
-});
+export const User = new UserModel();
+dso.define(User);
