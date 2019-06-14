@@ -47,16 +47,16 @@ export default class UserController extends BaseController {
     let user = await User.findOne(Where.field("github_id").eq(info.id));
     let userId: number;
     const userInfo: any = {
-      githubId: info.id,
-      githubName: info.login,
+      github_id: info.id,
+      github_name: info.login,
       name: info.login,
-      githubToken: accessToken,
-      nickName: info.name,
+      github_token: accessToken,
+      nick_name: info.name,
       location: info.location,
       avatar: `https://avatars1.githubusercontent.com/u/${info.id}?v=4`,
       email: info.email,
       company: info.company,
-      homePage: info.blog,
+      home_page: info.blog,
       signature: info.bio
     };
 
@@ -76,6 +76,6 @@ export default class UserController extends BaseController {
   @Get("/info/:id")
   async info(@Param("id") id: string) {
     const user = await User.findById(id);
-    return { ...user, password: null, githubToken: null };
+    return { ...user, password: null, github_token: null };
   }
 }

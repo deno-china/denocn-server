@@ -12,13 +12,13 @@ class UserModel extends BaseModel<UserModel> {
   @Field({ type: FieldType.STRING, length: 50 })
   name: string;
   @Field({ type: FieldType.STRING, length: 50 })
-  nickName: string;
+  nick_name: string;
   @Field({ type: FieldType.STRING, length: 100 })
   password: string;
   @Field({ type: FieldType.STRING, length: 100 })
   email: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  homePage: string;
+  home_page: string;
   @Field({ type: FieldType.STRING, length: 255 })
   avatar: string;
   @Field({ type: FieldType.STRING, length: 100 })
@@ -29,20 +29,20 @@ class UserModel extends BaseModel<UserModel> {
   company: string;
 
   @Field({ type: FieldType.STRING, length: 50 })
-  githubId: string;
+  github_id: string;
   @Field({ type: FieldType.STRING, length: 50 })
-  githubName: string;
+  github_name: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  githubToken: string;
+  github_token: string;
 
   @Field({ type: FieldType.INT, length: 10, default: 0 })
   topicCount: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  replyCount: number;
+  reply_count: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  followerCount: number;
+  follower_count: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  followingCount: number;
+  following_count: number;
   @Field({ type: FieldType.STRING, length: 50 })
   level: string;
   @Field({ type: FieldType.INT, length: 10, default: 0 })

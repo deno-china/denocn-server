@@ -12,23 +12,23 @@ class TopicModel extends BaseModel<TopicModel> {
   @Field({ type: FieldType.STRING, length: 200 })
   title: string;
   @Field({ type: FieldType.INT, length: 20 })
-  authorId: number;
+  author_id: number;
   @Field({ type: FieldType.TEXT, length: 65535 })
   content: string;
   @Field({ type: FieldType.BOOLEAN, default: false })
-  isTop: boolean; // 置顶
+  is_top: boolean; // 置顶
   @Field({ type: FieldType.BOOLEAN, default: false })
-  isGood: boolean; // 精华
+  is_good: boolean; // 精华
   @Field({ type: FieldType.BOOLEAN, default: false })
-  isLock: boolean; // 锁定
+  is_lock: boolean; // 锁定
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  replyCount: number;
+  reply_count: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  viewCount: number;
+  view_count: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  collectCount: number;
+  collect_count: number;
   @Field({ type: FieldType.INT, length: 20 })
-  lastReplyId: number;
+  last_reply_id: number;
   @Field({ type: FieldType.STRING, length: 255 })
   tags: string;
   @Field({ type: FieldType.BOOLEAN, default: false })
