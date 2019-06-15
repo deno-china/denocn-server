@@ -19,6 +19,7 @@
  */
 
 import { Router, RouterContext, Status } from "../deps.ts";
+import { State } from "../server.ts";
 import "./Reflect.ts";
 import { getAllRequestParams } from "./util.ts";
 
@@ -31,7 +32,7 @@ function registerRoute(
   actionName: string
 ) {
   router[method](path, async (ctx: RouterContext) => {
-    controller.ctx = ctx;
+    controller.ctx = ctx as any;
 
     // 获取请求参数
     const requestParams = getAllRequestParams(ctx);
@@ -69,7 +70,13 @@ function registerRoute(
 }
 
 export class BaseController {
-  ctx: RouterContext;
+  ctx: RouterContext<any, State>;
+  get session(): any {
+    return this.ctx.state.session;
+  }
+  get cookies() {
+    return this.ctx.state.cookies;
+  }
   redirect(url: string) {
     this.ctx.response.headers.append("Location", url);
     this.ctx.response.status = Status.Found;

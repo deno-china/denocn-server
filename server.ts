@@ -9,7 +9,7 @@ import { Application, colors, HttpError, send, Status } from "./deps.ts";
 import { connect as connectDb } from "./models/main.ts";
 const { cwd } = Deno;
 
-interface State {
+export interface State {
   cookies: Map<string, string>;
   session: any;
 }

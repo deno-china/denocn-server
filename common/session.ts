@@ -1,11 +1,12 @@
-import { Context } from "../deps.ts";
 import { uuid } from "https://deno.land/x/uuid@v0.1.2/mod.ts";
+import { Context } from "../deps.ts";
+import { State } from "../server.ts";
 import { getRedis } from "./redis.ts";
 
 const SESSION_KEY = "oaksessionid";
 const EXPIRE = 60 * 60 * 24; // one day
 
-export async function redisSession(ctx: Context, next: () => void) {
+export async function redisSession(ctx: Context<State>, next: () => void) {
   const redis = getRedis();
   let sessionId = ctx.state.cookies.get(SESSION_KEY);
   if (!sessionId) {

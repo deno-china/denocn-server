@@ -1,4 +1,9 @@
-import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
+import {
+  BaseController,
+  Controller,
+  Get,
+  Param
+} from "../common/base_controller.ts";
 import { github } from "../config.ts";
 import { Where } from "../deps.ts";
 import { User } from "../models/user.ts";
@@ -77,5 +82,11 @@ export default class UserController extends BaseController {
   async info(@Param("id") id: string) {
     const user = await User.findById(id);
     return { ...user, password: null, github_token: null };
+  }
+
+  @Get("/me")
+  async me() {
+    const user = this.ctx.state.session.user;
+    return user;
   }
 }
