@@ -1,6 +1,6 @@
-import { Where } from "../../../Library/Caches/deno/deps/https/raw.githubusercontent.com/manyuanrong/dso/0.2.0/mod.ts";
 import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
 import { github } from "../config.ts";
+import { Where } from "../deps.ts";
 import { User } from "../models/user.ts";
 
 @Controller("/user")
