@@ -18,8 +18,8 @@
  * ```
  */
 
-import "./Reflect.ts";
 import { Router, RouterContext, Status } from "../deps.ts";
+import "./Reflect.ts";
 import { getAllRequestParams } from "./util.ts";
 
 export const router = new Router();
@@ -129,7 +129,6 @@ export function Param(name: string) {
   return (target: any, methodName: string, propertyIndex: number) => {
     const meta = Reflect.getMetadata("http:params", target, methodName) || [];
     const types = Reflect.getMetadata("design:paramtypes", target, methodName);
-    if (methodName == "list") console.log(types);
     meta[propertyIndex] = { name, type: types[propertyIndex] };
     Reflect.defineMetadata("http:params", meta, target, methodName);
   };
