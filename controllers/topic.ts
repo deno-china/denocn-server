@@ -1,9 +1,32 @@
 import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
 import { Join, Order, QueryOptions, Where } from "../deps.ts";
+import { Reply } from "../models/reply.ts";
 import { Topic } from "../models/topic.ts";
+import { User } from "../models/user.ts";
 
 @Controller()
 class TopicController extends BaseController {
+  @Get("/topic/detail/:id")
+  async detail(@Param("id") id: number) {
+    const topic = await Topic.findById(id);
+    if (!topic) return null;
+    const user = await User.findById(topic.author_id);
+    const lastReply = topic.last_reply_id
+      ? await Reply.findById(topic.last_reply_id)
+      : null;
+
+    const replyUser =
+      lastReply && lastReply.author_id
+        ? await User.findById(lastReply.author_id)
+        : null;
+
+    return {
+      ...topic,
+      author: { ...user, github_token: null, password: null },
+      last_reply: lastReply ? { ...lastReply, author: replyUser } : null
+    };
+  }
+
   @Get("/topic/:type")
   async list(
     @Param("type") type: "all" | "new" | "hot" | "cold" | "job",
@@ -57,7 +80,9 @@ class TopicController extends BaseController {
     }
     const { total = 0 } = (await Topic.findOne({
       ...options,
-      fields: ["COUNT(*) AS total"]
+      fields: ["COUNT(*) AS total"],
+      order: [],
+      join: []
     })) as any;
     const topics = await Topic.findAll(options);
     return {

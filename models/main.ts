@@ -1,5 +1,6 @@
 import * as config from "../config.ts";
 import { dso } from "../deps.ts";
+import "./reply.ts";
 import "./topic.ts";
 import "./user.ts";
 
