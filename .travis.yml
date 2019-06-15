@@ -18,7 +18,7 @@ before_install:
 
 script:
   - export DENO_DIR="$PWD/cache"
-  - deno fetch ./server.ts
+  - deno fetch -c tsconfig.json ./server.ts
   - deno run -A -c tsconfig.json ./test.ts
   - docker build ./ -t denocn/website
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
