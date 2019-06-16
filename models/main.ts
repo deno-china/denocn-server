@@ -8,6 +8,7 @@ dso.showQueryLog = false;
 
 export async function connect() {
   await dso.connect(config.mysql);
+  await dso.sync(false);
 }
 
 export async function sync(force: boolean) {
