@@ -53,12 +53,11 @@ function registerRoute(
         } else {
           return val.toLowerCase() !== "false" && val.toLowerCase() !== "0";
         }
+      } else if (!val) {
+        return undefined;
       } else if (type === Number) {
         return new Number(val).valueOf();
       } else {
-        if (!val) {
-          return undefined;
-        }
         return new Type(val);
       }
     });

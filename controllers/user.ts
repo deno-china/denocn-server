@@ -1,9 +1,4 @@
-import {
-  BaseController,
-  Controller,
-  Get,
-  Param
-} from "../common/base_controller.ts";
+import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
 import { github } from "../config.ts";
 import { Where } from "../deps.ts";
 import { User } from "../models/user.ts";
@@ -32,12 +27,16 @@ export default class UserController extends BaseController {
 
   @Get("/github")
   async github(@Param("code") code: string, @Param("state") state: string) {
+    const body = new URLSearchParams();
+    body.append("client_id", github.clientId);
+    body.append("client_secret", github.clientSecret);
+    body.append("redirect_uri", github.redirectUri);
+    body.append("code", code);
+    body.append("state", state);
     let result = await fetch(`https://github.com/login/oauth/access_token`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body:
-        `client_id=${github.clientId}&client_secret=${github.clientSecret}` +
-        `&redirect_uri=${github.redirectUri}&code=${code}&state=${state}`
+      body
     });
     const params = new URLSearchParams(await result.text());
     const accessToken = params.get("access_token");
@@ -48,7 +47,6 @@ export default class UserController extends BaseController {
     );
 
     const info = await result.json();
-    const { session } = this.ctx.state;
     let user = await User.findOne(Where.field("github_id").eq(info.id));
     let userId: number;
     const userInfo: any = {
@@ -74,7 +72,7 @@ export default class UserController extends BaseController {
     }
 
     user = await User.findById(userId);
-    session.user = user;
+    this.session.user = user;
     this.redirect(`/user/${user.id}`);
   }
 

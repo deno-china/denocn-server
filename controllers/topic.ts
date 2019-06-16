@@ -68,15 +68,12 @@ class TopicController extends BaseController {
           Order.by("topics.created_at").desc
         ];
         break;
-      case "job":
-        options.where = Where.field("tags").like("%job%");
+      default:
+        options.where = Where.field("tags").like(`%${type}%`);
         options.order = [
           Order.by("topics.updated_at").asc,
           Order.by("topics.created_at").desc
         ];
-        break;
-      default:
-        return "Unknown type";
     }
     const { total = 0 } = (await Topic.findOne({
       ...options,
