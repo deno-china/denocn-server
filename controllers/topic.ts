@@ -2,7 +2,8 @@ import {
   BaseController,
   Controller,
   Get,
-  Param
+  Param,
+  Post
 } from "../common/base_controller.ts";
 import { Join, Order, QueryOptions, Where } from "../deps.ts";
 import { Reply } from "../models/reply.ts";
@@ -30,6 +31,29 @@ class TopicController extends BaseController {
       author: { ...user, github_token: null, password: null },
       last_reply: lastReply ? { ...lastReply, author: replyUser } : null
     };
+  }
+
+  @Post("/topic/add")
+  async add(
+    @Param("content") content: string,
+    @Param("tags") tags: string,
+    @Param("title") title: string
+  ) {
+    if (!this.session.user) throw new Error("用户未登录");
+    if (!content || content.length < 20) {
+      throw new Error("内容长度最少20个字符");
+    }
+    if (!title || title.length < 5) {
+      throw new Error("标题长度至少5个字符");
+    }
+    const topicId = await Topic.insert({
+      title,
+      content,
+      author_id: this.session.user.id,
+      tags
+    });
+
+    return topicId;
   }
 
   @Get("/topic/:type")
