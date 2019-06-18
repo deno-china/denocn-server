@@ -35,7 +35,7 @@ function registerRoute(
     controller.ctx = ctx as any;
 
     // 获取请求参数
-    const requestParams = getAllRequestParams(ctx);
+    const requestParams = await getAllRequestParams(ctx);
 
     // 获取方法参数信息
     const params: any[] =

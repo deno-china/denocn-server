@@ -1,4 +1,9 @@
-import { BaseController, Controller, Get, Param } from "../common/base_controller.ts";
+import {
+  BaseController,
+  Controller,
+  Get,
+  Param
+} from "../common/base_controller.ts";
 import { Join, Order, QueryOptions, Where } from "../deps.ts";
 import { Reply } from "../models/reply.ts";
 import { Topic } from "../models/topic.ts";
@@ -29,7 +34,7 @@ class TopicController extends BaseController {
 
   @Get("/topic/:type")
   async list(
-    @Param("type") type: "all" | "new" | "hot" | "cold" | "job",
+    @Param("type") type: "all" | "new" | "good" | "hot" | "cold" | "job",
     @Param("page") page: number = 1,
     @Param("size") size: number = 10
   ) {
@@ -53,6 +58,13 @@ class TopicController extends BaseController {
         options.order = [
           Order.by("topics.reply_count").desc,
           Order.by("topics.updated_at").desc
+        ];
+        break;
+      case "good":
+        options.where = Where.field("topics.is_good").eq(true);
+        options.order = [
+          Order.by("topics.updated_at").desc,
+          Order.by("topics.created_at").desc
         ];
         break;
       case "new":

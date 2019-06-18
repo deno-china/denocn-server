@@ -1,7 +1,7 @@
 import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
 
 @Model("users")
-class UserModel extends BaseModel<UserModel> {
+export class UserModel extends BaseModel {
   @Field({
     type: FieldType.INT,
     length: 20,
@@ -49,5 +49,4 @@ class UserModel extends BaseModel<UserModel> {
   score: number;
 }
 
-export const User = new UserModel();
-dso.define(User);
+export const User = dso.define(UserModel);

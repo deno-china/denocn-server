@@ -1,7 +1,7 @@
 import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
 
 @Model("topics")
-class TopicModel extends BaseModel<TopicModel> {
+export class TopicModel extends BaseModel {
   @Field({
     type: FieldType.INT,
     length: 20,
@@ -35,5 +35,4 @@ class TopicModel extends BaseModel<TopicModel> {
   deleted: boolean;
 }
 
-export const Topic = new TopicModel();
-dso.define(Topic);
+export const Topic = dso.define(TopicModel);

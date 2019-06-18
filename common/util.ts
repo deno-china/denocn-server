@@ -26,10 +26,18 @@ export function dateFormat(format: string, date: Date) {
   return format;
 }
 
-export function getAllRequestParams(ctx: RouterContext) {
-  const params = {};
+export async function getAllRequestParams(ctx: RouterContext) {
+  let params = {};
   for (const pair of ctx.request.searchParams.entries()) {
     params[pair[0]] = pair[1];
+  }
+  const body = await ctx.request.body();
+  if (body.type === "form") {
+    for (const pair of (body.value as URLSearchParams).entries()) {
+      params[pair[0]] = pair[1];
+    }
+  } else if (body.type === "json") {
+    params = { ...params, ...body.value };
   }
   return { ...ctx.params, ...params };
 }
