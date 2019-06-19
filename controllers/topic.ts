@@ -53,7 +53,7 @@ class TopicController extends BaseController {
       tags
     });
 
-    return topicId;
+    return { id: topicId };
   }
 
   @Get("/topic/:type")
@@ -69,8 +69,7 @@ class TopicController extends BaseController {
         "users.avatar as user_avatar",
         "reply_user.nick_name as reply_user_name",
         "reply_user.id as reply_user_id",
-        "reply_user.avatar as reply_user_avatar",
-        "replies.created_at as reply_time"
+        "reply_user.avatar as reply_user_avatar"
       ],
       join: [
         Join.left("users").on("users.id", "topics.author_id"),
@@ -85,32 +84,32 @@ class TopicController extends BaseController {
     };
     switch (type) {
       case "all":
-        options.order.concat([
-          Order.by("replies.updated_at").desc,
+        options.order = options.order.concat([
+          Order.by("topics.last_reply_time").desc,
           Order.by("topics.created_at").desc
         ]);
         break;
       case "hot":
-        options.order.concat([
+        options.order = options.order.concat([
           Order.by("topics.reply_count").desc,
-          Order.by("replies.updated_at").desc
+          Order.by("topics.last_reply_time").desc
         ]);
         break;
       case "good":
         options.where = Where.field("topics.is_good").eq(true);
-        options.order.concat([
-          Order.by("replies.updated_at").desc,
+        options.order = options.order.concat([
+          Order.by("topics.last_reply_time").desc,
           Order.by("topics.created_at").desc
         ]);
         break;
       case "new":
-        options.order.concat([
+        options.order = options.order.concat([
           Order.by("topics.created_at").desc,
-          Order.by("replies.updated_at").desc
+          Order.by("topics.last_reply_time").desc
         ]);
         break;
       case "cold":
-        options.order.concat([
+        options.order = options.order.concat([
           Order.by("topics.reply_count").asc,
           Order.by("topics.view_count").asc,
           Order.by("topics.created_at").desc
@@ -118,15 +117,15 @@ class TopicController extends BaseController {
         break;
       case "job":
         options.where = Where.field("topics.type").eq(`招聘`);
-        options.order.concat([
-          Order.by("replies.updated_at").asc,
+        options.order = options.order.concat([
+          Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc
         ]);
         break;
       default:
         options.where = Where.field("tags").like(`%${type}%`);
         options.order.concat([
-          Order.by("replies.updated_at").asc,
+          Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc
         ]);
     }

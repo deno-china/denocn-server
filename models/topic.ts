@@ -1,4 +1,4 @@
-import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
+import { BaseModel, Defaults, dso, Field, FieldType, Model } from "../deps.ts";
 
 @Model("topics")
 export class TopicModel extends BaseModel {
@@ -32,7 +32,11 @@ export class TopicModel extends BaseModel {
   @Field({ type: FieldType.INT, length: 10, default: 0 })
   collect_count: number;
   @Field({ type: FieldType.INT, length: 20 })
+  
   last_reply_id: number;
+  @Field({ type: FieldType.DATE, default: Defaults.CURRENT_TIMESTAMP })
+  last_reply_time: Date;
+
   @Field({ type: FieldType.STRING, length: 255 })
   tags: string;
   @Field({ type: FieldType.BOOLEAN, default: false })
