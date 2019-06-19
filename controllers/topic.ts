@@ -66,50 +66,69 @@ class TopicController extends BaseController {
       fields: [
         "topics.*",
         "users.nick_name as user_nick_name",
-        "users.avatar as user_avatar"
+        "users.avatar as user_avatar",
+        "reply_user.nick_name as reply_user_name",
+        "reply_user.id as reply_user_id",
+        "reply_user.avatar as reply_user_avatar",
+        "replies.created_at as reply_time"
       ],
-      join: [Join.left("users").on("users.id", "topics.author_id")],
+      join: [
+        Join.left("users").on("users.id", "topics.author_id"),
+        Join.left("replies").on("replies.id", "topics.last_reply_id"),
+        Join.left("users", "reply_user").on(
+          "reply_user.id",
+          "replies.author_id"
+        )
+      ],
+      order: [Order.by("topics.is_top").desc],
       limit: [(page - 1) * size, size]
     };
     switch (type) {
       case "all":
-        options.order = [
-          Order.by("topics.updated_at").desc,
+        options.order.concat([
+          Order.by("replies.updated_at").desc,
           Order.by("topics.created_at").desc
-        ];
+        ]);
         break;
       case "hot":
-        options.order = [
+        options.order.concat([
           Order.by("topics.reply_count").desc,
-          Order.by("topics.updated_at").desc
-        ];
+          Order.by("replies.updated_at").desc
+        ]);
         break;
       case "good":
         options.where = Where.field("topics.is_good").eq(true);
-        options.order = [
-          Order.by("topics.updated_at").desc,
+        options.order.concat([
+          Order.by("replies.updated_at").desc,
           Order.by("topics.created_at").desc
-        ];
+        ]);
         break;
       case "new":
-        options.order = [
+        options.order.concat([
           Order.by("topics.created_at").desc,
-          Order.by("topics.updated_at").desc
-        ];
+          Order.by("replies.updated_at").desc
+        ]);
         break;
       case "cold":
-        options.order = [
-          Order.by("topics.view_count").asc,
+        options.order.concat([
           Order.by("topics.reply_count").asc,
+          Order.by("topics.view_count").asc,
           Order.by("topics.created_at").desc
-        ];
+        ]);
+        break;
+      case "job":
+        options.where = Where.field("topics.type").eq(`招聘`);
+        options.order.concat([
+          Order.by("replies.updated_at").asc,
+          Order.by("topics.created_at").desc
+        ]);
         break;
       default:
         options.where = Where.field("tags").like(`%${type}%`);
-        options.order = [
-          Order.by("topics.updated_at").asc,
+        options.order.concat([
+          Order.by("replies.updated_at").asc,
           Order.by("topics.created_at").desc
-        ];
+        ]);
     }
     const { total = 0 } = (await Topic.findOne({
       ...options,

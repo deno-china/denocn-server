@@ -91,7 +91,7 @@ class SeoController extends BaseController {
     @Param("size") size: number = 30
   ) {
     if (!isSpider(this.ctx)) {
-      return this.redirect(`/?page=${page}/size`);
+      return this.redirect(`/?page=${page}`);
     }
     const options: QueryOptions = {
       fields: ["title", "id", "author_id"],

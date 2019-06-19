@@ -9,6 +9,10 @@ export class TopicModel extends BaseModel {
     autoIncrement: true
   })
   id: number;
+
+  @Field({ type: FieldType.STRING, length: 20, default: `"分享"` })
+  type: "分享" | "问答" | "招聘";
+
   @Field({ type: FieldType.STRING, length: 200 })
   title: string;
   @Field({ type: FieldType.INT, length: 20 })
