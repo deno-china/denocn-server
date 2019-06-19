@@ -41,3 +41,18 @@ export async function getAllRequestParams(ctx: RouterContext) {
   }
   return { ...ctx.params, ...params };
 }
+
+export function isSpider(ctx: RouterContext) {
+  let ua = ctx.request.headers.get("user-agent") || "";
+  ua = ua.toLowerCase();
+  if (ua.includes("spider")) {
+    return true;
+  }
+  if (ua.includes("googlebot")) {
+    return true;
+  }
+  if (ua.includes("webspider")) {
+    return true;
+  }
+  return false;
+}

@@ -35,7 +35,10 @@ export const startup = {
 };
 
 export const website = {
-  title: "Deno中文社区"
+  title: "DENOCN: Deno中文社区 | Deno中国",
+  description:
+    "DENOCN 社区为国内最专业的 Deno 开源技术社区，致力于 Deno 技术学习与研究。",
+  domain: "https://denocn.org"
 };
 
 export const github = {

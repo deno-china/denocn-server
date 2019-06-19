@@ -1,6 +1,7 @@
 import { router } from "./common/base_controller.ts";
 import "./controllers/home.ts";
 import "./controllers/reply.ts";
+import "./controllers/seo.ts";
 import "./controllers/topic.ts";
 import "./controllers/user.ts";
 import { Application } from "./deps.ts";

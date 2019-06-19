@@ -60,7 +60,7 @@ class TopicController extends BaseController {
   async list(
     @Param("type") type: "all" | "new" | "good" | "hot" | "cold" | "job",
     @Param("page") page: number = 1,
-    @Param("size") size: number = 10
+    @Param("size") size: number = 30
   ) {
     const options: QueryOptions = {
       fields: [

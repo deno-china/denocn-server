@@ -29,17 +29,24 @@ function registerRoute(
   method: string,
   path: string,
   controller: BaseController,
-  actionName: string
+  actionName: string,
+  interceptor: (ctx: RouterContext, params: any) => Promise<boolean>
 ) {
   router[method](path, async (ctx: RouterContext) => {
     controller.ctx = ctx as any;
 
-    // 获取请求参数
-    const requestParams = await getAllRequestParams(ctx);
-
     // 获取方法参数信息
     const params: any[] =
       Reflect.getMetadata("http:params", controller, actionName) || [];
+
+    const extraParams =
+      Reflect.getMetadata(`http:extra`, controller, actionName) || {};
+
+    // 获取请求参数
+    const requestParams = {
+      ...extraParams,
+      ...(await getAllRequestParams(ctx))
+    };
 
     // 转换参数类型，填充参数值
     const data = params.map(({ name, type }) => {
@@ -49,22 +56,29 @@ function registerRoute(
         return val;
       } else if (type === Boolean) {
         if (!val) {
-          return false;
+          requestParams[name] = false;
         } else {
-          return val.toLowerCase() !== "false" && val.toLowerCase() !== "0";
+          requestParams[name] =
+            val.toLowerCase() !== "false" && val.toLowerCase() !== "0";
         }
+        return requestParams[name];
       } else if (!val) {
         return undefined;
       } else if (type === Number) {
-        return new Number(val).valueOf();
+        requestParams[name] = new Number(val).valueOf();
+        return requestParams[name];
       } else {
-        return new Type(val);
+        requestParams[name] = new Type(val);
+        return requestParams[name];
       }
     });
 
+    const canNext = interceptor ? await interceptor(ctx, requestParams) : true;
     // 调用action
-    const action = controller[actionName];
-    return await action.call(controller, ...(data || []));
+    if (canNext) {
+      const action = controller[actionName];
+      return await action.call(controller, ...(data || []));
+    }
   });
 }
 
@@ -87,7 +101,10 @@ interface ControllerConstructor {
 }
 
 // Controller 装饰器
-export function Controller(parentPath: string = "") {
+export function Controller(
+  parentPath: string = "",
+  interceptor?: (ctx: RouterContext, params: any) => Promise<boolean>
+) {
   return function<T extends ControllerConstructor>(target: T) {
     const _target = target.prototype;
     console.log("\nRegister Controller:", target.name);
@@ -101,7 +118,7 @@ export function Controller(parentPath: string = "") {
           "=>",
           `${target.name}.${meta[actionPath]}`
         );
-        registerRoute(method, path, _target, meta[actionPath]);
+        registerRoute(method, path, _target, meta[actionPath], interceptor);
       }
     };
     register("get");
@@ -110,7 +127,7 @@ export function Controller(parentPath: string = "") {
 }
 
 // Controller http action 装饰器
-export function httpMethod(method: string, url: string) {
+export function httpMethod(method: string, url: string, params?: any) {
   return function(
     target: any,
     methodName: string,
@@ -119,17 +136,18 @@ export function httpMethod(method: string, url: string) {
     const meta = Reflect.getMetadata(`http:method:${method}`, target) || {};
     meta[url] = methodName;
     Reflect.defineMetadata(`http:method:${method}`, meta, target);
+    Reflect.defineMetadata(`http:extra`, params, target, methodName);
   };
 }
 
 // Controller get action 装饰器
-export function Get(url: string) {
-  return httpMethod("get", url);
+export function Get(url: string, params?: any) {
+  return httpMethod("get", url, params);
 }
 
 // Controller post action 装饰器
-export function Post(url: string) {
-  return httpMethod("post", url);
+export function Post(url: string, params?: any) {
+  return httpMethod("post", url, params);
 }
 
 // Action 参数装饰器
