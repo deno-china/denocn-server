@@ -1,4 +1,3 @@
-import { router } from "./common/base_controller.ts";
 import { cookie } from "./common/cookis.ts";
 import jsonResultConvertor from "./common/json_result.ts";
 import { connectRedis } from "./common/redis.ts";

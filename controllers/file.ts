@@ -34,9 +34,9 @@ class FileController extends BaseController {
       bytes.push(char.charCodeAt(0));
     }
 
-    const path = "public/upload/" + uuid() + format;
+    const path = "upload/" + uuid() + format;
     await Deno.mkdirSync("./public/upload", true);
-    await Deno.writeFileSync("./" + path, new Uint8Array(bytes));
+    await Deno.writeFileSync("./public/" + path, new Uint8Array(bytes));
 
     return { path: "https://data.denocn.org/" + path };
   }

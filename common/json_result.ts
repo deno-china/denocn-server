@@ -11,6 +11,9 @@ export default async function jsonResultConvertor(ctx: Context, next) {
     success = false;
     msg = error.message;
   }
+  if (!result) {
+    return;
+  }
   if (typeof result === "object" || msg) {
     ctx.response.body = {
       data: result,
