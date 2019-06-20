@@ -88,7 +88,7 @@ class SeoController extends BaseController {
   @Get("/topics")
   async topics(
     @Param("page") page: number = 1,
-    @Param("size") size: number = 30
+    @Param("size") size: number = 20
   ) {
     if (!isSpider(this.ctx)) {
       return this.redirect(`/?page=${page}`);

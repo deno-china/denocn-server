@@ -5,7 +5,7 @@ import {
   Param,
   Post
 } from "../common/base_controller.ts";
-import { Join, Order, QueryOptions, Where } from "../deps.ts";
+import { Join, Order, QueryOptions, Where, dso } from "../deps.ts";
 import { Reply } from "../models/reply.ts";
 import { Topic } from "../models/topic.ts";
 import { User } from "../models/user.ts";
@@ -15,6 +15,14 @@ class TopicController extends BaseController {
   @Get("/topic/detail/:id")
   async detail(@Param("id") id: number) {
     const topic = await Topic.findById(id);
+
+    dso.client.execute(`UPDATE topics SET ?? = ?? + 1 WHERE ?? = ?`, [
+      "view_count",
+      "view_count",
+      "id",
+      id
+    ]);
+
     if (!topic) return null;
     const user = await User.findById(topic.author_id);
     const lastReply = topic.last_reply_id
@@ -60,7 +68,7 @@ class TopicController extends BaseController {
   async list(
     @Param("type") type: "all" | "new" | "good" | "hot" | "cold" | "job",
     @Param("page") page: number = 1,
-    @Param("size") size: number = 30
+    @Param("size") size: number = 20
   ) {
     const options: QueryOptions = {
       fields: [
