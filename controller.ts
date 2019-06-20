@@ -1,4 +1,5 @@
 import { router } from "./common/base_controller.ts";
+import "./controllers/file.ts";
 import "./controllers/home.ts";
 import "./controllers/reply.ts";
 import "./controllers/seo.ts";
