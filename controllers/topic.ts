@@ -36,7 +36,7 @@ class TopicController extends BaseController {
 
     return {
       ...topic,
-      author: { ...user, github_token: null, password: null },
+      author: user ? { ...user, github_token: null, password: null } : null,
       last_reply: lastReply ? { ...lastReply, author: replyUser } : null
     };
   }

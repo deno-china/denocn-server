@@ -15,7 +15,7 @@ class ReplyController extends BaseController {
   async list(
     @Param("topicId") topicId: number,
     @Param("size") size: number = 10,
-    @Param("page") page: number = 1
+    @Param("page") page: number
   ) {
     const options: QueryOptions = {
       fields: [
@@ -26,15 +26,24 @@ class ReplyController extends BaseController {
       join: [Join.left("users").on("replies.author_id", "users.id")],
       where: Where.field("replies.topic_id").eq(topicId),
       order: [Order.by("replies.created_at").desc],
-      limit: [(page - 1) * size, size]
+      limit: page ? [(page - 1) * size, size] : null
     };
-    const { total } = (await Reply.findOne({
-      ...options,
-      fields: ["COUNT(*) AS total"],
-      order: null,
-      join: null
-    })) as any;
+
     const replies = await Reply.findAll(options);
+
+    let total = 0;
+    if (page) {
+      const result = (await Reply.findOne({
+        ...options,
+        fields: ["COUNT(*) AS total"],
+        order: null,
+        join: null
+      })) as { total: number };
+      total = result.total;
+    } else {
+      total = replies.length;
+    }
+
     return {
       list: replies,
       total,
@@ -70,6 +79,6 @@ class ReplyController extends BaseController {
       return id;
     });
 
-    return replyId;
+    return { id: replyId };
   }
 }
