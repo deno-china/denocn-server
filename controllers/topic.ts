@@ -5,7 +5,7 @@ import {
   Param,
   Post
 } from "../common/base_controller.ts";
-import { Join, Order, QueryOptions, Where, dso } from "../deps.ts";
+import { dso, Join, Order, QueryOptions, Where } from "../deps.ts";
 import { Reply } from "../models/reply.ts";
 import { Topic } from "../models/topic.ts";
 import { User } from "../models/user.ts";
@@ -64,6 +64,41 @@ class TopicController extends BaseController {
     return { id: topicId };
   }
 
+  @Post("/topic/edit")
+  async edit(
+    @Param("id") id: number,
+    @Param("content") content: string,
+    @Param("tags") tags: string,
+    @Param("title") title: string
+  ) {
+    if (!this.session.user) throw new Error("用户未登录");
+    if (!content || content.length < 20) {
+      throw new Error("内容长度最少20个字符");
+    }
+    if (!title || title.length < 5) {
+      throw new Error("标题长度至少5个字符");
+    }
+    const topicId = await Topic.update({
+      id,
+      title,
+      content,
+      author_id: this.session.user.id,
+      tags
+    });
+
+    return { id };
+  }
+
+  @Get("/topic/delete/:id")
+  async delete(@Param("id") id: number) {
+    const user = this.session.user;
+    if (!user) throw new Error("未登录");
+    const topic = await Topic.findById(id);
+    if (topic.author_id !== user.id) throw new Error("你没有删除权限");
+    await Topic.update({ id, deleted: true });
+    return { data: "success" };
+  }
+
   @Get("/topic/:type")
   async list(
     @Param("type") type: "all" | "new" | "good" | "hot" | "cold" | "job",
@@ -87,6 +122,7 @@ class TopicController extends BaseController {
           "replies.author_id"
         )
       ],
+      where: Where.field("topics.deleted").eq(false),
       order: [Order.by("topics.is_top").desc],
       limit: [(page - 1) * size, size]
     };
@@ -104,7 +140,10 @@ class TopicController extends BaseController {
         ]);
         break;
       case "good":
-        options.where = Where.field("topics.is_good").eq(true);
+        options.where = Where.and(
+          Where.field("topics.is_good").eq(true),
+          options.where
+        );
         options.order = options.order.concat([
           Order.by("topics.last_reply_time").desc,
           Order.by("topics.created_at").desc
@@ -124,14 +163,20 @@ class TopicController extends BaseController {
         ]);
         break;
       case "job":
-        options.where = Where.field("topics.type").eq(`招聘`);
+        options.where = Where.and(
+          Where.field("topics.type").eq(`招聘`),
+          options.where
+        );
         options.order = options.order.concat([
           Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc
         ]);
         break;
       default:
-        options.where = Where.field("tags").like(`%${type}%`);
+        options.where = Where.and(
+          Where.field("tags").like(`%${type}%`),
+          options.where
+        );
         options.order.concat([
           Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc

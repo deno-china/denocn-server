@@ -25,7 +25,7 @@ class ReplyController extends BaseController {
       ],
       join: [Join.left("users").on("replies.author_id", "users.id")],
       where: Where.field("replies.topic_id").eq(topicId),
-      order: [Order.by("replies.created_at").desc],
+      order: [Order.by("replies.created_at").asc],
       limit: page ? [(page - 1) * size, size] : null
     };
 
