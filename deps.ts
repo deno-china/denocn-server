@@ -1,5 +1,5 @@
 export { assert, assertEquals } from "https://deno.land/std/testing/asserts.ts";
-export * from "https://deno.land/x/dso@0.4.1/mod.ts";
+export * from "https://deno.land/x/dso@0.4.2/mod.ts";
 export { Application, Context, HttpError, Router, RouterContext, send, Status } from "https://deno.land/x/oak/mod.ts";
 export { runTests, test } from "https://deno.land/x/std/testing/mod.ts";
 export { uuid } from "https://deno.land/x/uuid/mod.ts";
