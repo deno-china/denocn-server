@@ -73,8 +73,10 @@ class ReplyController extends BaseController {
       });
       await topicModel.update({
         id: topicId,
+        last_reply_time: new Date(),
         reply_count: topic.reply_count + 1,
-        last_reply_id: id
+        last_reply_id: id,
+        
       });
       return id;
     });
