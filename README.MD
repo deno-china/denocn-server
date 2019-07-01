@@ -38,6 +38,27 @@
 └── tsconfig.json # TypeScript参数配置。
 ```
 
+### 修改配置
+
+配置全局环境变量，或者配置 `.env` 文件。参考 `.env.example` 文件
+
+```sh
+# 环境变量配置示例。请创建.env文件，将需要修改的项配置到.env文件中
+
+MYSQL_HOST= #MySQL地址
+MYSQL_PORT= #MySQL端口号
+MYSQL_USER= #MySQL用户名
+MYSQL_PASS= #MySQL数据库密码
+MYSQL_DB= #MySQL数据库名
+REDIS_PORT= #Reids端口
+REDIS_HOST= #Redis服务地址
+REDIS_PASS= #Redis密码
+GITHUB_SECRET= #GitHub应用Secret
+GITHUB_CLIENTID= #Github应用ID
+GITHUB_REDIRECT= #Github登录回调地址
+```
+
+
 ### 启动
 ```sh
 deno -A -c tsconfig.json server.ts

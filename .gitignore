@@ -5,3 +5,4 @@ package.json
 *node_modules/
 yarn.lock
 public/upload/
+.env

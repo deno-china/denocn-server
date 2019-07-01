@@ -1,3 +1,5 @@
+import "https://deno.land/x/dotenv/load.ts";
+
 const {
   GITHUB_SECRET,
   MYSQL_HOST,
