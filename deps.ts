@@ -1,5 +1,5 @@
 export { assert, assertEquals } from "https://deno.land/std/testing/asserts.ts";
-export * from "https://deno.land/x/dso@0.4.3/mod.ts";
+export * from "https://deno.land/x/dso@0.4.5/mod.ts";
 export {
   Application,
   Context,
