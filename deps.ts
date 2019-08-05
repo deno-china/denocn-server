@@ -10,7 +10,7 @@ export {
   Status
 } from "https://deno.land/x/oak/mod.ts";
 export { runTests, test } from "https://deno.land/x/std/testing/mod.ts";
-export { uuid } from "https://deno.land/x/uuid/mod.ts";
+export { uuid } from "https://deno.land/std/uuid/mod.ts";
 export {
   default as Marked
 } from "https://raw.githubusercontent.com/denolib/marked/master/main.ts";
