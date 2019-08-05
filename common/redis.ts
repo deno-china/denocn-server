@@ -1,7 +1,7 @@
 import {
   connect,
   Redis
-} from "https://denopkg.com/keroxp/deno-redis@v0.3.0/redis.ts";
+} from "https://denopkg.com/keroxp/deno-redis@v0.3.1/redis.ts";
 import { redis as config } from "../config.ts";
 
 let redis: Redis;
