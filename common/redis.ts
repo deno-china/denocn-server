@@ -1,8 +1,5 @@
-import {
-  connect,
-  Redis
-} from "https://denopkg.com/keroxp/deno-redis@v0.3.1/redis.ts";
 import { redis as config } from "../config.ts";
+import { Redis, redisConnect } from "../deps.ts";
 
 let redis: Redis;
 
@@ -11,7 +8,7 @@ export function getRedis() {
 }
 
 export async function connectRedis() {
-  redis = await connect(`${config.host}:${config.port}`);
+  redis = await redisConnect(`${config.host}:${config.port}`);
   if (config.password) {
     await redis.auth(config.password);
   }
