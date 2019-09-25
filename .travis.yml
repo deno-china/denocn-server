@@ -20,9 +20,9 @@ script:
   - export DENO_DIR="$PWD/cache"
   - deno fetch -c tsconfig.json ./server.ts
   - deno run -A -c tsconfig.json ./test.ts
-  - docker build ./ -t denocn/website
+  - docker build ./ -t registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker push denocn/website
+  - docker push registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
 
 after_success:
   - ssh root@47.75.127.82 "source /etc/profile;/root/denocn.sh"
