@@ -4,7 +4,7 @@ MAINTAINER manyuanrong "416828041@qq.com"
 ENV TZ Asia/Shanghai
 COPY ./ /data/
 WORKDIR /data
-ENV DENO_DIR /data/cache
+RUN deno fetch -c tsconfig.json ./server.ts
 
 EXPOSE 3000
 ENTRYPOINT []
