@@ -6,3 +6,4 @@ package.json
 yarn.lock
 public/upload/
 .env
+cache

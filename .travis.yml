@@ -19,7 +19,9 @@ before_install:
 script:
   - export DENO_DIR="$PWD/cache"
   - deno fetch -c tsconfig.json ./server.ts
+  - rm -rf cache/gen
   - deno run -A -c tsconfig.json ./test.ts
+  - rm -rf cache/gen
   - docker build ./ -t registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
   - docker login -u $DOCKER_USER -p $DOCKER_PASS registry.cn-hongkong.aliyuncs.com
   - docker push registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
