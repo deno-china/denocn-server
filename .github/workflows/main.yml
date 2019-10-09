@@ -7,10 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: zhulik/redis-action@v1.0.0
       - uses: denolib/setup-deno@v1
         with:
           deno-version: "v0.20.0"
       - name: test
+        env:
+          MYSQL_USER: root
+          MYSQL_PASS: root
         run: |
           touch .env
           deno run -A -c tsconfig.json ./test.ts
