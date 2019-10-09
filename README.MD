@@ -1,8 +1,8 @@
 ## Deno 中文社区后端部分
 
-[![Build Status](https://www.travis-ci.org/deno-china/website.svg?branch=master)](https://www.travis-ci.org/deno-china/website)
+[![Build Status](https://github.com/manyuanrong/website/workflows/CI/badge.svg)](https://github.com/deno-china/website/actions)
 ![GitHub](https://img.shields.io/github/license/deno-china/website.svg)
-[![(Deno)](https://img.shields.io/badge/deno-0.9.0-green.svg)](https://deno.land)
+[![(Deno)](https://img.shields.io/badge/deno-0.20.0-green.svg)](https://deno.land)
 [![Website](https://img.shields.io/website/https/denocn.org.svg?up_message=startup)](https://denocn.org)
 
 ### 项目结构

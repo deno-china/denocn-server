@@ -33,8 +33,9 @@ export async function getAllRequestParams(ctx: RouterContext) {
   }
   const body = await ctx.request.body();
   if (body.type === "form") {
-    for (const pair of (body.value as URLSearchParams).entries()) {
-      params[pair[0]] = pair[1];
+    const searchParams = body.value as URLSearchParams;
+    for (const key of searchParams.keys()) {
+      params[key] = searchParams.get(key);
     }
   } else if (body.type === "json") {
     params = { ...params, ...body.value };

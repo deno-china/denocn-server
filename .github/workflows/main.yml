@@ -1,0 +1,42 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: denolib/setup-deno@v1
+        with:
+          deno-version: "v0.20.0"
+      - name: test
+        run: |
+          touch .env
+          deno run -A -c tsconfig.json ./test.ts
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build Image
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS registry.cn-hongkong.aliyuncs.com
+          docker build ./ -t registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
+          docker push registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [publish]
+    steps:
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          port: 22
+          script: ${{ secrets.DEPLOY_SCRIPT }}
