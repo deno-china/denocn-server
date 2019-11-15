@@ -10,7 +10,7 @@ jobs:
       - uses: zhulik/redis-action@v1.0.0
       - uses: denolib/setup-deno@v1
         with:
-          deno-version: "v0.20.0"
+          deno-version: "v0.24.0"
       - name: test
         env:
           MYSQL_USER: root
