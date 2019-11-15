@@ -1,0 +1,1 @@
+deno -c tsconfig.json -A server.ts

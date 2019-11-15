@@ -1,13 +1,15 @@
 import { router } from "./common/base_controller.ts";
-import "./controllers/file.ts";
-import "./controllers/home.ts";
-import "./controllers/reply.ts";
-import "./controllers/seo.ts";
-import "./controllers/topic.ts";
-import "./controllers/user.ts";
 import { Application } from "./deps.ts";
 
-export default function initControllers(app: Application) {
+async function loadControllers() {
+  const dirs = await Deno.readDir("./controllers");
+  for (const file of dirs) {
+    await import(`./controllers/${file.name}`);
+  }
+}
+
+export default async function initControllers(app: Application) {
+  await loadControllers();
   const routes = router.routes();
   app.use(routes);
   console.log("\nInit Controllers");

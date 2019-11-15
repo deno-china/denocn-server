@@ -66,7 +66,7 @@ async function init() {
 
   app.use(jsonResultConvertor);
 
-  initControllers(app);
+  await initControllers(app);
 
   app.use(async ctx => {
     console.log(ctx.request.path);

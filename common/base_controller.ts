@@ -21,6 +21,7 @@
 import { Router, RouterContext, Status } from "../deps.ts";
 import { State } from "../server.ts";
 import "./Reflect.ts";
+import { render } from "./render.tsx";
 import { getAllRequestParams } from "./util.ts";
 
 export const router = new Router();
@@ -93,6 +94,9 @@ export class BaseController {
   redirect(url: string) {
     this.ctx.response.headers.append("Location", url);
     this.ctx.response.status = Status.Found;
+  }
+  render(view, data?: Object) {
+    return render(view, data);
   }
 }
 

@@ -2,8 +2,10 @@
   "compilerOptions": {
     "allowJs": true,
     "module": "esnext",
-    "resolveJsonModule": true,
     "target": "esnext",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "jsxFactory": "globalThis.React.createElement",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }
