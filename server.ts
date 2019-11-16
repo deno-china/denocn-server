@@ -77,17 +77,13 @@ async function init() {
   });
 }
 
-async function main() {
-  await connectDb();
-  await connectRedis();
-  await init();
-  try {
-    const addr = `${config.startup.host}:${config.startup.port}`;
-    console.info(`Server statup on ${addr}\n`);
-    await app.listen(addr);
-  } catch (error) {
-    console.error(error);
-  }
+await connectDb();
+await connectRedis();
+await init();
+try {
+  const addr = `${config.startup.host}:${config.startup.port}`;
+  console.info(`Server statup on ${addr}\n`);
+  await app.listen(addr);
+} catch (error) {
+  console.error(error);
 }
-
-main();

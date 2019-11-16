@@ -1,7 +1,7 @@
 import { router } from "./common/base_controller.ts";
 import { Application } from "./deps.ts";
 
-async function loadControllers() {
+export async function loadControllers() {
   const dirs = await Deno.readDir("./controllers");
   for (const file of dirs) {
     await import(`./controllers/${file.name}`);

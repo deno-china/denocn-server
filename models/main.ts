@@ -3,7 +3,7 @@ import { dso } from "../deps.ts";
 
 dso.showQueryLog = false;
 
-async function loadModels() {
+export async function loadModels() {
   const dirs = await Deno.readDir("./models");
   for (const file of dirs) {
     if (file.name !== "main.ts") {

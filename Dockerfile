@@ -5,6 +5,7 @@ ENV TZ Asia/Shanghai
 COPY ./ /data/
 WORKDIR /data
 RUN touch .env && deno fetch -c tsconfig.json ./server.ts
+RUN deno run -A -c tsconfig.json ./ci-precompile.ts
 
 EXPOSE 3000
 ENTRYPOINT []
