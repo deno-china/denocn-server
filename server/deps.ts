@@ -22,3 +22,5 @@ export { default as Marked } from "https://raw.githubusercontent.com/denolib/mar
 export { Template } from "https://raw.githubusercontent.com/zekth/deno_tiny_templates/master/mod.ts";
 import * as _colors from "https://deno.land/std@v0.24.0/fmt/colors.ts";
 export const colors = _colors;
+import * as _path from "https://deno.land/std/path/mod.ts";
+export const path = _path;

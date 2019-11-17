@@ -1,9 +1,8 @@
 mysql.log
 package-lock.json
-package.json
 .vscode
 *node_modules/
-yarn.lock
-public/upload/
+web/.cache
+public
 .env
 cache

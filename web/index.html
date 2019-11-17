@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/public/assets/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Deno中文社区</title>
+    <title>${page_title}</title>
   </head>
 
   <body>
-    <div id="app"></div>
+    <script>
+      window.$state = "${state}";
+    </script>
+    <div id="app">${content}</div>
+    <script src="./index.tsx"></script>
   </body>
 </html>

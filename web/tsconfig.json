@@ -4,8 +4,8 @@
     "module": "esnext",
     "target": "esnext",
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "jsx": "react",
-    "jsxFactory": "globalThis.React.createElement",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }

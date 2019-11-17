@@ -6,7 +6,7 @@ import * as config from "./config.ts";
 import initControllers from "./controller.ts";
 import { Application, colors, HttpError, send, Status } from "./deps.ts";
 import { connect as connectDb } from "./models/main.ts";
-const { cwd } = Deno;
+import { path } from "./deps.ts";
 
 export interface State {
   cookies: Map<string, string>;
@@ -71,7 +71,7 @@ async function init() {
   app.use(async ctx => {
     console.log(ctx.request.path);
     await send(ctx, ctx.request.path, {
-      root: `${cwd()}/public`,
+      root: path.resolve(Deno.cwd(), `../public`),
       index: "index.html"
     });
   });

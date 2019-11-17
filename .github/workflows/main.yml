@@ -16,14 +16,35 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASS: root
         run: |
+          cd ./server
           touch .env
           deno run -A -c tsconfig.json ./test.ts
+
+  build:
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - run: |
+          cd web
+          yarn
+          yarn build-ssr
+          yarn build
+          cd ../
+      - uses: actions/upload-artifact@master
+        with: 
+          name: public
+          path: public
 
   publish:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/download-artifact@master
+        with:
+          name: public
       - name: Build Image
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
