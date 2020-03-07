@@ -1,4 +1,4 @@
-import "https://deno.land/x/dotenv/load.ts";
+import "https://deno.land/x/dotenv@v0.2.3/load.ts";
 
 const {
   GITHUB_SECRET,

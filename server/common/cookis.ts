@@ -1,4 +1,4 @@
-import { Context } from "../deps.ts";
+import { Context } from "oak";
 
 export async function cookie(ctx: Context, next: () => void) {
   const cookie = ctx.request.headers.get("cookie");

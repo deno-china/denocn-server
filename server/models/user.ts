@@ -1,4 +1,4 @@
-import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
+import { BaseModel, dso, Field, FieldType, Model } from "dso";
 
 @Model("users")
 export class UserModel extends BaseModel {
@@ -8,45 +8,45 @@ export class UserModel extends BaseModel {
     primary: true,
     autoIncrement: true
   })
-  id: number;
+  id!: number;
   @Field({ type: FieldType.STRING, length: 50 })
-  name: string;
+  name!: string;
   @Field({ type: FieldType.STRING, length: 50 })
-  nick_name: string;
+  nick_name!: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  password: string;
+  password!: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  email: string;
+  email?: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  home_page: string;
+  home_page?: string;
   @Field({ type: FieldType.STRING, length: 255 })
-  avatar: string;
+  avatar!: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  location: string;
+  location?: string;
   @Field({ type: FieldType.STRING, length: 200 })
-  signature: string;
+  signature?: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  company: string;
+  company?: string;
 
   @Field({ type: FieldType.STRING, length: 50 })
-  github_id: string;
+  github_id!: string;
   @Field({ type: FieldType.STRING, length: 50 })
-  github_name: string;
+  github_name!: string;
   @Field({ type: FieldType.STRING, length: 100 })
-  github_token: string;
+  github_token!: string;
 
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  topicCount: number;
+  topicCount!: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  reply_count: number;
+  reply_count!: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  follower_count: number;
+  follower_count!: number;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  following_count: number;
+  following_count!: number;
   @Field({ type: FieldType.STRING, length: 50 })
-  level: string;
+  level!: string;
   @Field({ type: FieldType.INT, length: 10, default: 0 })
-  score: number;
+  score!: number;
 }
 
 export const User = dso.define(UserModel);

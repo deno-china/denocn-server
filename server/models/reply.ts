@@ -1,4 +1,4 @@
-import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
+import { BaseModel, dso, Field, FieldType, Model } from "dso";
 
 @Model("replies")
 export class ReplyModel extends BaseModel {
@@ -8,17 +8,17 @@ export class ReplyModel extends BaseModel {
     primary: true,
     autoIncrement: true
   })
-  id: number;
+  id!: number;
   @Field({ type: FieldType.INT, length: 20, notNull: true })
-  topic_id: number;
+  topic_id!: number;
   @Field({ type: FieldType.INT, length: 20 })
-  reply_to: number;
+  reply_to?: number;
   @Field({ type: FieldType.INT, length: 20 })
-  author_id: number;
+  author_id!: number;
   @Field({ type: FieldType.TEXT, length: 65535 })
-  content: string;
+  content!: string;
   @Field({ type: FieldType.BOOLEAN, default: false })
-  deleted: boolean;
+  deleted!: boolean;
 }
 
 export const Reply = dso.define(ReplyModel);

@@ -1,0 +1,69 @@
+@import "../../common.less";
+
+.com-topic-editor {
+  overflow: hidden;
+  * {
+    outline: none;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    h4 {
+      padding: 0px 20px;
+      font-size: 18px;
+      line-height: 20px;
+    }
+    .icon {
+      margin-right: 10px;
+      color: @primary;
+    }
+    button {
+      margin: 20px;
+      height: 40px;
+      width: 100px;
+      font-size: 16px;
+      background: @primary;
+      cursor: pointer;
+      border: none;
+    }
+  }
+  .body {
+    padding: 20px;
+    .form {
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: row;
+      select {
+        width: 100px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        height: 36px;
+        font-size: inherit;
+        display: inline-block;
+        margin-right: 20px;
+      }
+      input {
+        border: 1px solid #ddd;
+        padding: 0 10px;
+        border-radius: 5px;
+        height: 36px;
+        font-size: inherit;
+        display: inline-block;
+        flex: 1;
+      }
+    }
+    .tips {
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #777;
+      svg {
+        margin-right: 5px;
+        color: #ccc;
+      }
+    }
+  }
+}

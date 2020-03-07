@@ -1,13 +1,13 @@
 import {
   BaseController,
   Controller,
-  Post,
-  Param
+  Param,
+  Post
 } from "../common/base_controller.ts";
 import { uuid } from "../deps.ts";
 
 @Controller("/file")
-class FileController extends BaseController {
+export default class FileController extends BaseController {
   @Post("/upload")
   async upload() {
     const body = await this.ctx.request.body();
@@ -29,14 +29,14 @@ class FileController extends BaseController {
 
     const str = atob(data);
 
-    const bytes = [];
+    const bytes: number[] = [];
     for (const char of str) {
       bytes.push(char.charCodeAt(0));
     }
 
-    const path = "upload/" + uuid() + format;
-    await Deno.mkdirSync("./public/upload", true);
-    await Deno.writeFileSync("./public/" + path, new Uint8Array(bytes));
+    const path = "upload/" + uuid.generate() + format;
+    Deno.mkdirSync("./public/upload", true);
+    Deno.writeFileSync("./public/" + path, new Uint8Array(bytes));
 
     return { path: "https://data.denocn.org/" + path };
   }

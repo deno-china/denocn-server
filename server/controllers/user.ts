@@ -1,3 +1,4 @@
+import { Where } from "dso";
 import {
   BaseController,
   Controller,
@@ -5,7 +6,6 @@ import {
   Param
 } from "../common/base_controller.ts";
 import { github } from "../config.ts";
-import { Where } from "../deps.ts";
 import { User } from "../models/user.ts";
 
 @Controller("/user")
@@ -69,7 +69,7 @@ export default class UserController extends BaseController {
     };
 
     if (user) {
-      userId = user.id;
+      userId = user.id!;
       userInfo.id = 1;
       await User.update(userInfo);
     } else {
@@ -78,7 +78,7 @@ export default class UserController extends BaseController {
 
     user = await User.findById(userId);
     this.session.user = user;
-    this.redirect(`/user/${user.id}`);
+    this.redirect(`/user/${user?.id}`);
   }
 
   @Get("/info/:id")

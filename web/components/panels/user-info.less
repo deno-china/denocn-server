@@ -1,0 +1,49 @@
+.panel-user-info {
+  .body {
+    padding: 20px;
+  }
+  img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    background: #f4f4f4;
+    border: none;
+  }
+  .name {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  .score {
+    font-size: 14px;
+  }
+  .bio {
+    clear: both;
+    font-size: 12px;
+    position: relative;
+    padding: 0 15px;
+    padding-top: 15px;
+    &::before {
+      content: "“ ";
+      font-size: 24px;
+      position: absolute;
+      left: 0;
+      margin-right: 20px;
+    }
+    &::after {
+      font-size: 24px;
+      content: " ”";
+      position: absolute;
+      right: 0;
+    }
+  }
+  p {
+    padding: 0;
+    margin: 0;
+  }
+}

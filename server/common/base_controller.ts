@@ -18,10 +18,10 @@
  * ```
  */
 
-import { Router, RouterContext, Status } from "../deps.ts";
-import { State } from "../server.ts";
+import { Router, RouterContext, Status } from "oak";
+import { renderToString } from "./react.tsx";
 import "./Reflect.ts";
-import { render } from "./render.tsx";
+import { State } from "./state.ts";
 import { getAllRequestParams } from "./util.ts";
 
 export const router = new Router();
@@ -31,9 +31,9 @@ function registerRoute(
   path: string,
   controller: BaseController,
   actionName: string,
-  interceptor: (ctx: RouterContext, params: any) => Promise<boolean>
+  interceptor?: (ctx: RouterContext, params: any) => Promise<boolean>
 ) {
-  router[method](path, async (ctx: RouterContext) => {
+  (router as any)[method](path, async (ctx: RouterContext) => {
     controller.ctx = ctx as any;
 
     // 获取方法参数信息
@@ -77,14 +77,14 @@ function registerRoute(
     const canNext = interceptor ? await interceptor(ctx, requestParams) : true;
     // 调用action
     if (canNext) {
-      const action = controller[actionName];
+      const action = (controller as any)[actionName];
       return await action.call(controller, ...(data || []));
     }
   });
 }
 
 export class BaseController {
-  ctx: RouterContext<any, State>;
+  public ctx!: RouterContext<any, State>;
   get session(): any {
     return this.ctx.state.session;
   }
@@ -95,8 +95,8 @@ export class BaseController {
     this.ctx.response.headers.append("Location", url);
     this.ctx.response.status = Status.Found;
   }
-  render(view, data?: Object) {
-    return render(view, data);
+  render(view: any, data?: Object) {
+    return renderToString(view);
   }
 }
 

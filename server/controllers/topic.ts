@@ -1,3 +1,4 @@
+import { dso, Join, Order, QueryOptions, Where } from "dso";
 import {
   BaseController,
   Controller,
@@ -5,7 +6,6 @@ import {
   Param,
   Post
 } from "../common/base_controller.ts";
-import { dso, Join, Order, QueryOptions, Where } from "../deps.ts";
 import { Reply } from "../models/reply.ts";
 import { Topic } from "../models/topic.ts";
 import { User } from "../models/user.ts";
@@ -24,7 +24,7 @@ class TopicController extends BaseController {
     ]);
 
     if (!topic) return null;
-    const user = await User.findById(topic.author_id);
+    const user = await User.findById(topic.author_id!);
     const lastReply = topic.last_reply_id
       ? await Reply.findById(topic.last_reply_id)
       : null;
@@ -94,7 +94,7 @@ class TopicController extends BaseController {
     const user = this.session.user;
     if (!user) throw new Error("未登录");
     const topic = await Topic.findById(id);
-    if (topic.author_id !== user.id) throw new Error("你没有删除权限");
+    if (topic?.author_id !== user.id) throw new Error("你没有删除权限");
     await Topic.update({ id, deleted: true });
     return { data: "success" };
   }
@@ -128,13 +128,13 @@ class TopicController extends BaseController {
     };
     switch (type) {
       case "all":
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.last_reply_time").desc,
           Order.by("topics.created_at").desc
         ]);
         break;
       case "hot":
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.reply_count").desc,
           Order.by("topics.last_reply_time").desc
         ]);
@@ -144,19 +144,19 @@ class TopicController extends BaseController {
           Where.field("topics.is_good").eq(true),
           options.where
         );
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.last_reply_time").desc,
           Order.by("topics.created_at").desc
         ]);
         break;
       case "new":
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.created_at").desc,
           Order.by("topics.last_reply_time").desc
         ]);
         break;
       case "cold":
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.reply_count").asc,
           Order.by("topics.view_count").asc,
           Order.by("topics.created_at").desc
@@ -167,7 +167,7 @@ class TopicController extends BaseController {
           Where.field("topics.type").eq(`招聘`),
           options.where
         );
-        options.order = options.order.concat([
+        options.order = options.order!.concat([
           Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc
         ]);
@@ -177,7 +177,7 @@ class TopicController extends BaseController {
           Where.field("tags").like(`%${type}%`),
           options.where
         );
-        options.order.concat([
+        options.order!.concat([
           Order.by("topics.last_reply_time").asc,
           Order.by("topics.created_at").desc
         ]);

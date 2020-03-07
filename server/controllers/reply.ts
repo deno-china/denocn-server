@@ -1,3 +1,4 @@
+import { dso, Join, Order, QueryOptions, Where } from "dso";
 import {
   BaseController,
   Controller,
@@ -5,7 +6,6 @@ import {
   Param,
   Post
 } from "../common/base_controller.ts";
-import { dso, Join, Order, QueryOptions, Where } from "../deps.ts";
 import { Reply, ReplyModel } from "../models/reply.ts";
 import { Topic, TopicModel } from "../models/topic.ts";
 
@@ -26,7 +26,7 @@ class ReplyController extends BaseController {
       join: [Join.left("users").on("replies.author_id", "users.id")],
       where: Where.field("replies.topic_id").eq(topicId),
       order: [Order.by("replies.created_at").asc],
-      limit: page ? [(page - 1) * size, size] : null
+      limit: page ? [(page - 1) * size, size] : undefined
     };
 
     const replies = await Reply.findAll(options);
@@ -35,9 +35,7 @@ class ReplyController extends BaseController {
     if (page) {
       const result = (await Reply.findOne({
         ...options,
-        fields: ["COUNT(*) AS total"],
-        order: null,
-        join: null
+        fields: ["COUNT(*) AS total"]
       })) as { total: number };
       total = result.total;
     } else {
@@ -62,7 +60,7 @@ class ReplyController extends BaseController {
     if (!this.session.user) throw new Error("用户未登录");
     if (!topic) throw new Error("主题不存在");
 
-    const replyId = await dso.transaction<number>(async trans => {
+    const replyId = await dso.transaction<number | undefined>(async trans => {
       const replyModel = trans.getModel(ReplyModel);
       const topicModel = trans.getModel(TopicModel);
       const id = await replyModel.insert({
@@ -74,7 +72,7 @@ class ReplyController extends BaseController {
       await topicModel.update({
         id: topicId,
         last_reply_time: new Date(),
-        reply_count: topic.reply_count + 1,
+        reply_count: (topic.reply_count ?? 0) + 1,
         last_reply_id: id
       });
 
