@@ -3,7 +3,7 @@ import { Application, HttpError, send, Status } from "oak";
 import * as path from "path";
 import { cookie } from "./common/cookis.ts";
 import jsonResultConvertor from "./common/json_result.ts";
-import "./common/mongo.ts";
+// import "./common/mongo.ts";
 import { redisSession } from "./common/session.ts";
 import { State } from "./common/state.ts";
 import * as config from "./config.ts";
