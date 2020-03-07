@@ -16,9 +16,8 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASS: root
         run: |
-          cd ./server
           touch .env
-          deno run -A -c tsconfig.json ./test.ts
+          deno run -A -c tsconfig.json --importmap importmap.json ./server/test.ts
 
   build:
     runs-on: ubuntu-latest

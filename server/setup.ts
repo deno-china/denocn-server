@@ -1,5 +1,5 @@
+import { Client, dso } from "dso";
 import { mysql } from "./config.ts";
-import { Client, dso } from "./deps.ts";
 import { sync } from "./models/main.ts";
 import { User } from "./models/user.ts";
 
