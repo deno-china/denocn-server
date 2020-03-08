@@ -3,12 +3,11 @@ import { Application, HttpError, send, Status } from "oak";
 import * as path from "path";
 import { cookie } from "./common/cookis.ts";
 import jsonResultConvertor from "./common/json_result.ts";
-// import "./common/mongo.ts";
+import "./common/mongo.ts";
 import { redisSession } from "./common/session.ts";
 import { State } from "./common/state.ts";
 import * as config from "./config.ts";
 import initControllers from "./controller.ts";
-import { connect } from "./models/main.ts";
 
 const app = new Application<State>();
 await logger.setup({});
@@ -63,7 +62,6 @@ app.use(redisSession);
 app.use(jsonResultConvertor);
 
 await initControllers(app);
-await connect();
 
 app.use(async ctx => {
   console.log(ctx.request.path);

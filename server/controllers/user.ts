@@ -1,4 +1,4 @@
-import { Where } from "dso";
+import { ObjectId } from "mongo";
 import {
   BaseController,
   Controller,
@@ -52,8 +52,8 @@ export default class UserController extends BaseController {
     );
 
     const info = await result.json();
-    let user = await User.findOne(Where.field("github_id").eq(info.id));
-    let userId: number;
+    let user = await User.findOne({ github_id: info.id });
+    let userId: ObjectId;
     const userInfo: any = {
       github_id: info.id,
       github_name: info.login,
@@ -69,16 +69,15 @@ export default class UserController extends BaseController {
     };
 
     if (user) {
-      userId = user.id!;
-      userInfo.id = 1;
+      userId = user._id;
+      userInfo._id = 1;
       await User.update(userInfo);
     } else {
-      userId = (await User.insert(userInfo)) as number;
+      user = await User.create(userInfo);
     }
 
-    user = await User.findById(userId);
     this.session.user = user;
-    this.redirect(`/user/${user?.id}`);
+    this.redirect(`/user/${user?._id.$oid}`);
   }
 
   @Get("/info/:id")

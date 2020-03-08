@@ -1,27 +1,36 @@
-import { uuid } from "https://deno.land/x/uuid@v0.1.2/mod.ts";
+import { assert } from "asserts";
+import { ObjectId } from "mongo";
 import { Context } from "oak";
-import { getRedis } from "./redis.ts";
+import { MongoModel, WithId } from "../models/base.ts";
+import { UserSchema } from "../models/user.ts";
 import { State } from "./state.ts";
 
 const SESSION_KEY = "oaksessionid";
 const EXPIRE = 60 * 60 * 24; // one day
 
-export async function redisSession(ctx: Context<State>, next: () => void) {
-  const redis = await getRedis();
-  let sessionId = ctx.state.cookies.get(SESSION_KEY);
-  if (!sessionId) {
-    sessionId = uuid();
-    const cookie = `${SESSION_KEY}=${sessionId}; Path=/; HttpOnly`;
+class SessionSchema {
+  user?: UserSchema;
+}
+
+const SessionModel = new MongoModel(SessionSchema, "sessions");
+
+export async function redisSession(
+  ctx: Context<State>,
+  next: () => Promise<void>
+) {
+  let sessionId: ObjectId;
+  let session: (SessionSchema & WithId) | null;
+  try {
+    sessionId = ObjectId(ctx.state.cookies.get(SESSION_KEY) || "");
+    session = await SessionModel.findById(sessionId);
+    assert(session);
+  } catch (err) {
+    session = await SessionModel.create({});
+    sessionId = session._id!;
+    const cookie = `${SESSION_KEY}=${sessionId.$oid}; Path=/; HttpOnly`;
     ctx.response.headers.append(`Set-Cookie`, cookie);
   }
-  let redisSessionKey = `SESSION:${sessionId}`;
-  let session: any = null;
-  try {
-    session = await redis.get(redisSessionKey);
-  } catch (e) {
-    console.log(e);
-  }
-  ctx.state.session = JSON.parse(session || "{}");
+  ctx.state.session = session;
   await next();
-  await redis.setex(redisSessionKey, EXPIRE, JSON.stringify(ctx.state.session));
+  await SessionModel.update(session);
 }

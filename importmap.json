@@ -7,6 +7,6 @@
     "redis": "https://deno.land/x/redis@v0.8.2/redis.ts",
     "dso": "https://deno.land/x/dso@0.7.0/mod.ts",
     "asserts": "https://deno.land/std@v0.35.0/testing/asserts.ts",
-    "mongo": "https://deno.land/x/mongo@v0.3.0/mod.ts"
+    "mongo": "https://deno.land/x/mongo@v0.3.2/mod.ts"
   }
 }

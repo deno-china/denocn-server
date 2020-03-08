@@ -1,52 +1,24 @@
-import { BaseModel, dso, Field, FieldType, Model } from "dso";
+import { ObjectId } from "mongo";
+import { MongoModel } from "./base.ts";
 
-@Model("users")
-export class UserModel extends BaseModel {
-  @Field({
-    type: FieldType.INT,
-    length: 20,
-    primary: true,
-    autoIncrement: true
-  })
-  id!: number;
-  @Field({ type: FieldType.STRING, length: 50 })
+export class UserSchema {
+  _id!: ObjectId;
   name!: string;
-  @Field({ type: FieldType.STRING, length: 50 })
   nick_name!: string;
-  @Field({ type: FieldType.STRING, length: 100 })
-  password!: string;
-  @Field({ type: FieldType.STRING, length: 100 })
+  password?: string;
   email?: string;
-  @Field({ type: FieldType.STRING, length: 100 })
   home_page?: string;
-  @Field({ type: FieldType.STRING, length: 255 })
-  avatar!: string;
-  @Field({ type: FieldType.STRING, length: 100 })
+  avatar?: string;
   location?: string;
-  @Field({ type: FieldType.STRING, length: 200 })
   signature?: string;
-  @Field({ type: FieldType.STRING, length: 100 })
   company?: string;
 
-  @Field({ type: FieldType.STRING, length: 50 })
-  github_id!: string;
-  @Field({ type: FieldType.STRING, length: 50 })
-  github_name!: string;
-  @Field({ type: FieldType.STRING, length: 100 })
-  github_token!: string;
+  github_id?: string;
+  github_name?: string;
+  github_token?: string;
 
-  @Field({ type: FieldType.INT, length: 10, default: 0 })
-  topicCount!: number;
-  @Field({ type: FieldType.INT, length: 10, default: 0 })
-  reply_count!: number;
-  @Field({ type: FieldType.INT, length: 10, default: 0 })
-  follower_count!: number;
-  @Field({ type: FieldType.INT, length: 10, default: 0 })
-  following_count!: number;
-  @Field({ type: FieldType.STRING, length: 50 })
-  level!: string;
-  @Field({ type: FieldType.INT, length: 10, default: 0 })
-  score!: number;
+  level?: string;
+  score: number = 0;
 }
 
-export const User = dso.define(UserModel);
+export const User = new MongoModel(UserSchema, "users");
