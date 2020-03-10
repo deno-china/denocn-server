@@ -8,7 +8,7 @@ import {
 import { github } from "../config.ts";
 import { User } from "../models/user.ts";
 
-@Controller("/user")
+@Controller("/api/user")
 export default class UserController extends BaseController {
   @Get("/login")
   async login(@Param("redirect") url: string = "/") {

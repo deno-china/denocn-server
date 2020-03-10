@@ -4,10 +4,10 @@ import { website } from "../config.ts";
 const decoder = new TextDecoder();
 const htmlTemplate = decoder.decode(await Deno.readFile("./public/index.html"));
 
-export function render(path: string, data: any = {}): string {
-  const content = appRender({ url: path }, data);
-  const html = htmlTemplate
+export async function render(path: string, data: any = {}): Promise<string> {
+  const { html, state } = await appRender({ url: path }, data);
+  return htmlTemplate
     .replace("${page_title}", website.title)
-    .replace("${content}", content);
-  return html;
+    .replace("${content}", html)
+    .replace(`"__INIT_STATE__"`, JSON.stringify(state));
 }
