@@ -10,6 +10,7 @@ const EXPIRE = 60 * 60 * 24; // one day
 
 class SessionSchema {
   user?: UserSchema;
+  updated_at?: Date;
 }
 
 const SessionModel = new MongoModel(SessionSchema, "sessions");
@@ -25,12 +26,12 @@ export async function redisSession(
     session = await SessionModel.findById(sessionId);
     assert(session);
   } catch (err) {
-    session = await SessionModel.create({});
+    session = await SessionModel.create({ user: undefined });
     sessionId = session._id!;
     const cookie = `${SESSION_KEY}=${sessionId.$oid}; Path=/; HttpOnly`;
     ctx.response.headers.append(`Set-Cookie`, cookie);
   }
-  ctx.state.session = session;
+  ctx.state.session = { session };
   await next();
-  await SessionModel.update(session);
+  await SessionModel.update({ ...session, updated_at: new Date() });
 }

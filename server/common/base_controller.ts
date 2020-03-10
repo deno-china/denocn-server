@@ -19,7 +19,6 @@
  */
 
 import { Router, RouterContext, Status } from "oak";
-import { renderToString } from "./react.tsx";
 import "./Reflect.ts";
 import { State } from "./state.ts";
 import { getAllRequestParams } from "./util.ts";
@@ -94,9 +93,6 @@ export class BaseController {
   redirect(url: string) {
     this.ctx.response.headers.append("Location", url);
     this.ctx.response.status = Status.Found;
-  }
-  render(view: any, data?: Object) {
-    return renderToString(view);
   }
 }
 

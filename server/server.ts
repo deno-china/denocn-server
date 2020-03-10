@@ -1,14 +1,15 @@
+import { assert } from "asserts";
 import * as logger from "logger";
 import { Application, HttpError, send, Status } from "oak";
 import * as path from "path";
 import { cookie } from "./common/cookis.ts";
 import jsonResultConvertor from "./common/json_result.ts";
 import "./common/mongo.ts";
+import { render } from "./common/render.ts";
 import { redisSession } from "./common/session.ts";
 import { State } from "./common/state.ts";
 import * as config from "./config.ts";
 import initControllers from "./controller.ts";
-
 const app = new Application<State>();
 await logger.setup({});
 
@@ -17,31 +18,25 @@ app.use(async (context, next) => {
   try {
     await next();
   } catch (e) {
+    console.log("dddd");
     if (e instanceof HttpError) {
       context.response.status = e.status as any;
       if (e.expose) {
-        context.response.body = `<!DOCTYPE html>
-            <html>
-              <body>
-                <h1>${e.status} - ${e.message}</h1>
-              </body>
-            </html>`;
+        context.response.body = render("/error", {
+          title: `${e.status}`,
+          error: e.message
+        });
       } else {
-        context.response.body = `<!DOCTYPE html>
-            <html>
-              <body>
-                <h1>${e.status} - ${Status[e.status]}</h1>
-              </body>
-            </html>`;
+        context.response.body = render("/error", {
+          title: `${e.status} - ${Status[e.status]}`
+        });
       }
     } else if (e instanceof Error) {
       context.response.status = 500;
-      context.response.body = `<!DOCTYPE html>
-            <html>
-              <body>
-                <h1>500 - Internal Server Error</h1>
-              </body>
-            </html>`;
+      context.response.body = render("/error", {
+        title: "500 - Internal Server Error",
+        error: `Unhandled Error: ${e.message}`
+      });
       logger.error(`Unhandled Error: ${e.message}`);
       logger.error(JSON.stringify(e.stack));
     }
@@ -64,11 +59,15 @@ app.use(jsonResultConvertor);
 await initControllers(app);
 
 app.use(async ctx => {
-  console.log(ctx.request.path);
-  await send(ctx, ctx.request.path, {
-    root: path.resolve(Deno.cwd(), `../public`),
-    index: "index.html"
-  });
+  const requestPath = ctx.request.path;
+  try {
+    const resolvePath = await send(ctx, requestPath, {
+      root: path.resolve(Deno.cwd(), `./public`)
+    });
+    assert(resolvePath);
+  } catch (err) {
+    ctx.response.body = render(requestPath);
+  }
 });
 
 const addr = `${config.startup.host}:${config.startup.port}`;

@@ -4,6 +4,7 @@
     "oak": "https://deno.land/x/oak/mod.ts",
     "logger": "https://deno.land/std@v0.35.0/log/mod.ts",
     "path": "https://deno.land/std@v0.35.0/path/mod.ts",
+    "fs": "https://deno.land/std/fs/mod.ts",
     "redis": "https://deno.land/x/redis@v0.8.2/redis.ts",
     "dso": "https://deno.land/x/dso@0.7.0/mod.ts",
     "asserts": "https://deno.land/std@v0.35.0/testing/asserts.ts",
