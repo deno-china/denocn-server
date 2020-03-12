@@ -53,7 +53,7 @@ export default class UserController extends BaseController {
 
     const info = await result.json();
     let user = await User.findOne({ github_id: info.id });
-    let userId: ObjectId;
+    let userId!: ObjectId;
     const userInfo: any = {
       github_id: info.id,
       github_name: info.login,
@@ -77,7 +77,7 @@ export default class UserController extends BaseController {
     }
 
     this.session.user = user;
-    this.redirect(`/user/${user?._id.$oid}`);
+    this.redirect(`/user/${userId.$oid}`);
   }
 
   @Get("/info/:id")

@@ -18,7 +18,7 @@ export const website = {
 export const github = {
   clientId: GITHUB_CLIENTID || "32503fcf79dea41e69af",
   clientSecret: GITHUB_SECRET || "7f861c6aa9385e910fdf5b680792a442ee3f3ca2",
-  redirectUri: GITHUB_REDIRECT || "http://127.0.0.1:3000/api/user/github"
+  redirectUri: GITHUB_REDIRECT || "http://127.0.0.1:1234/api/user/github"
 };
 
 export const smtp = {
