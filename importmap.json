@@ -1,13 +1,13 @@
 {
   "imports": {
-    "std/": "https://deno.land/std@v0.35.0/",
+    "std/": "https://deno.land/std@v0.36.0/",
     "oak": "https://raw.githubusercontent.com/manyuanrong/oak/fix_deadlock/mod.ts",
-    "logger": "https://deno.land/std@v0.35.0/log/mod.ts",
-    "path": "https://deno.land/std@v0.35.0/path/mod.ts",
-    "fs": "https://deno.land/std/fs/mod.ts",
+    "logger": "https://deno.land/std@v0.36.0/log/mod.ts",
+    "path": "https://deno.land/std@v0.36.0/path/mod.ts",
+    "fs": "https://deno.land/std@v0.36.0/fs/mod.ts",
     "redis": "https://deno.land/x/redis@v0.8.2/redis.ts",
     "dso": "https://deno.land/x/dso@0.7.0/mod.ts",
-    "asserts": "https://deno.land/std@v0.35.0/testing/asserts.ts",
-    "mongo": "https://deno.land/x/mongo@v0.3.2/mod.ts"
+    "asserts": "https://deno.land/std@v0.36.0/testing/asserts.ts",
+    "mongo": "https://deno.land/x/mongo@v0.4.0/mod.ts"
   }
 }

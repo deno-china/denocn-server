@@ -30,6 +30,14 @@ export class MongoModel<Schema, T = Schema & WithId> {
     return this.collection.find(filter);
   }
 
+  public async aggregate(pipleline: Object[]): Promise<any | null> {
+    return this.collection.aggregate(pipleline);
+  }
+
+  public async count(filter?: Object): Promise<number> {
+    return this.collection.count(filter);
+  }
+
   public async create(doc: Partial<Schema>): Promise<T> {
     const _doc: any = this.mergeDefaults(doc);
     const insertId = await this.collection.insertOne(_doc);

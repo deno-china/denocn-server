@@ -19,6 +19,8 @@ export class UserSchema {
 
   level?: string;
   score: number = 0;
+
+  created_at?: Date = new Date();
 }
 
 export const User = new MongoModel(UserSchema, "users");

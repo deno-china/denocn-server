@@ -7,6 +7,9 @@ export class ReplySchema {
   author_id!: ObjectId;
   content!: string;
   deleted: boolean = false;
+
+  created_at?: Date = new Date();
+  updated_at?: Date = new Date();
 }
 
 export const Reply = new MongoModel(ReplySchema, "replies");

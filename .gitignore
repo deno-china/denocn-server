@@ -2,6 +2,7 @@ mysql.log
 package-lock.json
 .vscode
 *node_modules/
+.deno_plugins
 web/.cache
 public
 .env

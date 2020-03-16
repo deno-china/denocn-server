@@ -22,21 +22,30 @@ app.use(async (context, next) => {
     if (e instanceof HttpError) {
       context.response.status = e.status as any;
       if (e.expose) {
-        context.response.body = await render("/error", {
-          title: `${e.status}`,
-          error: e.message
-        });
+        context.response.body = await render(
+          { url: "/error" },
+          {
+            title: `${e.status}`,
+            error: e.message
+          }
+        );
       } else {
-        context.response.body = await render("/error", {
-          title: `${e.status} - ${Status[e.status]}`
-        });
+        context.response.body = await render(
+          { url: "/error" },
+          {
+            title: `${e.status} - ${Status[e.status]}`
+          }
+        );
       }
     } else if (e instanceof Error) {
       context.response.status = 500;
-      context.response.body = await render("/error", {
-        title: "500 - Internal Server Error",
-        error: `Unhandled Error: ${e.message}`
-      });
+      context.response.body = await render(
+        { url: "/error" },
+        {
+          title: "500 - Internal Server Error",
+          error: `Unhandled Error: ${e.message}`
+        }
+      );
       logger.error(`Unhandled Error: ${e.message}`);
       logger.error(JSON.stringify(e.stack));
     }
@@ -66,7 +75,10 @@ app.use(async ctx => {
     });
     assert(resolvePath);
   } catch (err) {
-    ctx.response.body = await render(requestPath);
+    ctx.response.body = await render({
+      url: requestPath,
+      search: ctx.request.search
+    });
   }
 });
 

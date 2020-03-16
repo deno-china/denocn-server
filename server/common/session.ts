@@ -8,7 +8,7 @@ import { State } from "./state.ts";
 const SESSION_KEY = "oaksessionid";
 const EXPIRE = 60 * 60 * 24; // one day
 
-class SessionSchema {
+export class SessionSchema {
   user?: UserSchema;
   updated_at?: Date;
 }
@@ -31,7 +31,7 @@ export async function redisSession(
     const cookie = `${SESSION_KEY}=${sessionId.$oid}; Path=/; HttpOnly`;
     ctx.response.headers.append(`Set-Cookie`, cookie);
   }
-  ctx.state.session = { session };
+  ctx.state.session = session;
   await next();
   await SessionModel.update({ ...session, updated_at: new Date() });
 }

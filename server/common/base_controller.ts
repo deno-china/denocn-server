@@ -22,6 +22,7 @@ import { Router, RouterContext, Status } from "oak";
 import "./Reflect.ts";
 import { State } from "./state.ts";
 import { getAllRequestParams } from "./util.ts";
+import { SessionSchema } from "./session.ts";
 
 export const router = new Router();
 
@@ -84,7 +85,7 @@ function registerRoute(
 
 export class BaseController {
   public ctx!: RouterContext<any, State>;
-  get session(): any {
+  get session(): SessionSchema {
     return this.ctx.state.session;
   }
   get cookies() {

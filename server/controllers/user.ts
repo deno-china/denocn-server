@@ -1,4 +1,3 @@
-import { ObjectId } from "mongo";
 import {
   BaseController,
   Controller,
@@ -53,7 +52,7 @@ export default class UserController extends BaseController {
 
     const info = await result.json();
     let user = await User.findOne({ github_id: info.id });
-    let userId!: ObjectId;
+
     const userInfo: any = {
       github_id: info.id,
       github_name: info.login,
@@ -69,15 +68,14 @@ export default class UserController extends BaseController {
     };
 
     if (user) {
-      userId = user._id;
-      userInfo._id = 1;
+      userInfo._id = user._id;
       await User.update(userInfo);
     } else {
       user = await User.create(userInfo);
     }
 
     this.session.user = user;
-    this.redirect(`/user/${userId.$oid}`);
+    this.redirect(`/user/${user._id.$oid}`);
   }
 
   @Get("/info/:id")
@@ -89,6 +87,6 @@ export default class UserController extends BaseController {
   @Get("/me")
   async me() {
     const user = this.ctx.state.session.user;
-    return user || {};
+    return user || null;
   }
 }

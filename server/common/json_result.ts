@@ -1,5 +1,5 @@
 import * as logger from "logger";
-import { Context } from "oak";
+import { Context, Status } from "oak";
 
 export default async function jsonResultConvertor(
   ctx: Context,
@@ -15,7 +15,7 @@ export default async function jsonResultConvertor(
     success = false;
     msg = error.message;
   }
-  if (!result && !msg) {
+  if (result === undefined && !msg) {
     return;
   }
   if (typeof result === "object" || msg) {
