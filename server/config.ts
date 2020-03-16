@@ -1,6 +1,13 @@
 import "https://deno.land/x/dotenv@v0.2.3/load.ts";
 
-const { GITHUB_SECRET, GITHUB_CLIENTID, GITHUB_REDIRECT } = Deno.env();
+const {
+  GITHUB_SECRET,
+  GITHUB_CLIENTID,
+  GITHUB_REDIRECT,
+  MONGODB_URI
+} = Deno.env();
+
+export const CONFIG_MONGODB_URI = MONGODB_URI || "mongodb://127.0.0.1:27017";
 
 // Web启动配置
 export const startup = {

@@ -8,13 +8,13 @@ export async function render(
   params: { url: string; search?: string },
   data: any = {}
 ): Promise<string> {
-  const { html, state } = await appRender({
+  const { html, state, meta } = await appRender({
     api_base: `http://127.0.0.1:${startup.port}`,
     params,
     data
   });
   return htmlTemplate
-    .replace("${page_title}", website.title)
+    .replace("${page_title}", meta?.title || website.title)
     .replace("${content}", html)
     .replace(
       `<body>`,

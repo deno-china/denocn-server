@@ -1,9 +1,10 @@
 import { init, MongoClient } from "mongo";
+import { CONFIG_MONGODB_URI } from "../config.ts";
 
 await init();
 
 const mongo = new MongoClient();
-mongo.connectWithUri("mongodb://127.0.0.1:27017");
+mongo.connectWithUri(CONFIG_MONGODB_URI);
 const db = mongo.database("denocn");
 
 export { db };
