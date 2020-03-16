@@ -5,13 +5,16 @@ import * as path from "path";
 import { cookie } from "./common/cookis.ts";
 import jsonResultConvertor from "./common/json_result.ts";
 import "./common/mongo.ts";
+import { connectMongodb } from "./common/mongo.ts";
 import { render } from "./common/render.ts";
 import { redisSession } from "./common/session.ts";
 import { State } from "./common/state.ts";
 import * as config from "./config.ts";
 import initControllers from "./controller.ts";
 const app = new Application<State>();
+
 await logger.setup({});
+await connectMongodb();
 
 // Error handler middleware
 app.use(async (context, next) => {
