@@ -5,4 +5,4 @@ yarn build
 cp -rf ./dist/ ../public
 cd ../
 
-deno fetch -c tsconfig.json --importmap importmap.json -A server/server.ts
+deno fetch -c tsconfig.json --importmap importmap.json server/server.ts
