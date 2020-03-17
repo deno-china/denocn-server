@@ -4,3 +4,4 @@
 /mysql.log
 /package*.json
 /yarn.lock
+/web

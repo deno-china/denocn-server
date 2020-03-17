@@ -1,17 +1,21 @@
-import { Context } from "../deps.ts";
+import * as logger from "logger";
+import { Context, Status } from "oak";
 
-export default async function jsonResultConvertor(ctx: Context, next) {
+export default async function jsonResultConvertor(
+  ctx: Context,
+  next: Function
+) {
   let result: any;
   let success = true;
-  let msg: string;
+  let msg: string = "";
   try {
     result = await next();
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     success = false;
     msg = error.message;
   }
-  if (!result && !msg) {
+  if (result === undefined && !msg) {
     return;
   }
   if (typeof result === "object" || msg) {

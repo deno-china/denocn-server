@@ -5,10 +5,9 @@ import {
   Param
 } from "../common/base_controller.ts";
 import { github } from "../config.ts";
-import { Where } from "../deps.ts";
 import { User } from "../models/user.ts";
 
-@Controller("/user")
+@Controller("/api/user")
 export default class UserController extends BaseController {
   @Get("/login")
   async login(@Param("redirect") url: string = "/") {
@@ -52,8 +51,8 @@ export default class UserController extends BaseController {
     );
 
     const info = await result.json();
-    let user = await User.findOne(Where.field("github_id").eq(info.id));
-    let userId: number;
+    let user = await User.findOne({ github_id: info.id });
+
     const userInfo: any = {
       github_id: info.id,
       github_name: info.login,
@@ -69,16 +68,14 @@ export default class UserController extends BaseController {
     };
 
     if (user) {
-      userId = user.id;
-      userInfo.id = 1;
+      userInfo._id = user._id;
       await User.update(userInfo);
     } else {
-      userId = (await User.insert(userInfo)) as number;
+      user = await User.create(userInfo);
     }
 
-    user = await User.findById(userId);
     this.session.user = user;
-    this.redirect(`/user/${user.id}`);
+    this.redirect(`/user/${user._id.$oid}`);
   }
 
   @Get("/info/:id")
@@ -90,6 +87,6 @@ export default class UserController extends BaseController {
   @Get("/me")
   async me() {
     const user = this.ctx.state.session.user;
-    return user || {};
+    return user || null;
   }
 }

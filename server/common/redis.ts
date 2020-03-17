@@ -1,14 +1,15 @@
+import { connect, Redis } from "redis";
 import { redis as config } from "../config.ts";
-import { Redis, redisConnect } from "../deps.ts";
 
 let redis: Redis;
 
 export function getRedis() {
-  return redis;
+  return redis ? redis : connectRedis();
 }
 
 export async function connectRedis() {
-  redis = await redisConnect(`${config.host}:${config.port}`);
+  const { host: hostname, port } = config;
+  redis = await connect({ hostname, port });
   if (config.password) {
     await redis.auth(config.password);
   }

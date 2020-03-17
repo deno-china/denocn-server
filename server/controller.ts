@@ -1,14 +1,15 @@
+import { Application } from "oak";
 import { router } from "./common/base_controller.ts";
-import { Application } from "./deps.ts";
+import { State } from "./common/state.ts";
 
 export async function loadControllers() {
-  const dirs = await Deno.readDir("./controllers");
+  const dirs = await Deno.readdir("./server/controllers");
   for (const file of dirs) {
     await import(`./controllers/${file.name}`);
   }
 }
 
-export default async function initControllers(app: Application) {
+export default async function initControllers(app: Application<State>) {
   await loadControllers();
   const routes = router.routes();
   app.use(routes);

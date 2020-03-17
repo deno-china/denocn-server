@@ -1,6 +1,8 @@
-rm -rf ./public
+rm -rf public
 cd web
+yarn
 yarn build
-yarn build-ssr
-cd ../server
-exec ./startup.sh
+cp -rf ./dist/ ../public
+cd ../
+
+deno fetch -c tsconfig.json --importmap importmap.json server/server.ts

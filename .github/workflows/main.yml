@@ -3,57 +3,42 @@ name: CI
 on: [push]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: zhulik/redis-action@v1.0.0
-      - uses: denolib/setup-deno@v1
-        with:
-          deno-version: "v0.24.0"
-      - name: test
-        env:
-          MYSQL_USER: root
-          MYSQL_PASS: root
-        run: |
-          cd ./server
-          touch .env
-          deno run -A -c tsconfig.json ./test.ts
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - run: |
-          cd web
-          yarn
-          yarn build-ssr
-          yarn build
-          cd ../
-      - uses: actions/upload-artifact@master
-        with: 
-          name: public
-          path: public
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: zhulik/redis-action@v1.0.0
+  #     - uses: denolib/setup-deno@v1
+  #       with:
+  #         deno-version: "v0.36.0"
+  #     - name: test
+  #       env:
+  #         MYSQL_USER: root
+  #         MYSQL_PASS: root
+  #       run: |
+  #         touch .env
+  #         deno run -A -c tsconfig.json --importmap importmap.json ./server/test.ts
 
   publish:
     runs-on: ubuntu-latest
-    needs: [test]
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/download-artifact@master
         with:
-          name: public
+          submodules: true
+      - uses: denolib/setup-deno@v1
+        with:
+          deno-version: "v0.36.0"
+      - name: build web
+        run: |
+          ./build.sh
       - name: Build Image
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS registry.cn-hongkong.aliyuncs.com
-          docker build ./ -t registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
-          docker push registry.cn-hongkong.aliyuncs.com/denocn/denocn-api
+          docker build ./ -t registry.cn-hongkong.aliyuncs.com/denocn/denocn-website
+          docker push registry.cn-hongkong.aliyuncs.com/denocn/denocn-website
 
   deploy:
     runs-on: ubuntu-latest

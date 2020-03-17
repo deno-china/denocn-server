@@ -1,24 +1,15 @@
-import { BaseModel, dso, Field, FieldType, Model } from "../deps.ts";
+import { ObjectId } from "mongo";
+import { MongoModel } from "./base.ts";
 
-@Model("replies")
-export class ReplyModel extends BaseModel {
-  @Field({
-    type: FieldType.INT,
-    length: 20,
-    primary: true,
-    autoIncrement: true
-  })
-  id: number;
-  @Field({ type: FieldType.INT, length: 20, notNull: true })
-  topic_id: number;
-  @Field({ type: FieldType.INT, length: 20 })
-  reply_to: number;
-  @Field({ type: FieldType.INT, length: 20 })
-  author_id: number;
-  @Field({ type: FieldType.TEXT, length: 65535 })
-  content: string;
-  @Field({ type: FieldType.BOOLEAN, default: false })
-  deleted: boolean;
+export class ReplySchema {
+  topic_id?: ObjectId;
+  reply_to?: ObjectId;
+  author_id!: ObjectId;
+  content!: string;
+  deleted: boolean = false;
+
+  created_at?: Date = new Date();
+  updated_at?: Date = new Date();
 }
 
-export const Reply = dso.define(ReplyModel);
+export const Reply = new MongoModel(ReplySchema, "replies");
