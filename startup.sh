@@ -1,7 +1,7 @@
 rm -rf public
 cd web
-yarn
-yarn build
+npm install
+npm run build
 cp -rf ./dist/ ../public
 cd ../
 

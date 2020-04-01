@@ -101,11 +101,12 @@ class TopicController extends BaseController {
 
   @Get("/topic/:type")
   async list(
-    @Param("type") type: "all" | "new" | "good" | "hot" | "cold" | "job",
+    @Param("type") type: "all" | "new" | "good" | "cold" | "job",
     @Param("page") page: number = 1,
-    @Param("size") size: number = 20
+    @Param("size") size: number = 10
   ) {
     const filter: any = {};
+    let sort: any = { $sort: { created_at: -1, "last_reply.created_at": -1 } };
 
     switch (type) {
       case "job":
@@ -114,12 +115,18 @@ class TopicController extends BaseController {
       case "good":
         filter.is_good = true;
         break;
-      case "hot":
-        // filter.is_hot = true;
-        break;
       case "cold":
+        sort = {
+          $sort: {
+            view_count: 1,
+            reply_count: 1,
+            created_at: -1,
+            "last_reply.created_at": -1
+          }
+        };
         break;
       case "new":
+        sort = { $sort: { created_at: -1, "last_reply.created_at": -1 } };
         break;
     }
 
@@ -129,8 +136,12 @@ class TopicController extends BaseController {
       lookupUser("author_id", "author"),
       lookupReply("last_reply_id", "last_reply"),
       { $unwind: { path: "$author" } },
-      { $unwind: { path: "$last_reply", preserveNullAndEmptyArrays: true } }
+      { $unwind: { path: "$last_reply", preserveNullAndEmptyArrays: true } },
+      sort,
+      { $skip: (page - 1) * size },
+      { $limit: size }
     ]);
+
     return {
       page,
       size,

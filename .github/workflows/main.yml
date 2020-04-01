@@ -3,22 +3,6 @@ name: CI
 on: [push]
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - uses: zhulik/redis-action@v1.0.0
-  #     - uses: denolib/setup-deno@v1
-  #       with:
-  #         deno-version: "v0.36.0"
-  #     - name: test
-  #       env:
-  #         MYSQL_USER: root
-  #         MYSQL_PASS: root
-  #       run: |
-  #         touch .env
-  #         deno run -A -c tsconfig.json --importmap importmap.json ./server/test.ts
-
   publish:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +11,7 @@ jobs:
           submodules: true
       - uses: denolib/setup-deno@v1
         with:
-          deno-version: "v0.36.0"
+          deno-version: "v0.38.0"
       - name: build web
         run: |
           ./build.sh
